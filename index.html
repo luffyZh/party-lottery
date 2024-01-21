@@ -3,10 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>元素周期表</title>
+    <link rel="icon" href="/assets/imgs/icon.png" />
+    <title>SF 实验室年会抽奖</title>
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
+    <canvas id="canvas"></canvas>
     <div id="container">
       <!-- 选中菜单结构 start-->
       <div id="menu">
@@ -17,9 +19,13 @@
       </div>
       <!-- end -->
     </div>
+    <script src="./js/star-bg.js"></script>
     <script src="./js/three.min.js"></script>
     <script src="./js/data.js"></script>
     <script type="module">
+      /**
+       * 初始化引入所有依赖
+       **/
       import { CSS3DRenderer, CSS3DObject } from "./js/CSS3DRenderer.js";
       import { TrackballControls } from "./js/TrackballControls.js";
       import TWEEN from "./js/tween.module.js";
@@ -30,8 +36,9 @@
        */
 
       /**
-       * [table 元素数据]
+       * [users 用户数据]
        * @type {Array}
+       * @element 五个一组 [ 姓名 英文 工号 所在列 所在行 ]
        * @element 五个一组 [ symbol detail1 detail2 columnInfo colInfo ]
        *
        * [ scene camera renderer ] the three basic component of three.js
@@ -39,14 +46,18 @@
        *
        * [objects save CSS3D domElem]
        * @type {Array}
-       *
-       *
+       * scene - 环境对象
+       * camera - 相机对象
+       * renderer - 渲染器对象
+       * controls - 轨道控制器对象
        * [targets save the four kinds vertices]
        * @type {Object}
        * [ table sphere helix grid ] transform CSS3D elem'position to one of these for animation
        */
       let scene, camera, renderer, controls;
+      // 保存 CSS3D 所有的 domElem
       const objects = [];
+      // 保存四种形式的 Objects3D 对象信息
       const targets = {
         grid: [],
         helix: [],
@@ -59,10 +70,6 @@
 
       /**
        * [init initialize scene && create animation && set constrol]
-       * @Author    yujunhao
-       * @DateTime  2019-03-10
-       * @version   [1.0.0]
-       * @return    {[no]}
        *
        * [camera perspective camera]
        * @param filedView
@@ -79,8 +86,6 @@
        * controls.minDistance = 500;  the camera min distance in Z Axis
        * controls.maxDistance = 6000; the camera max distance in Z Axis
        * @type {THREE}
-       *
-       *
        */
 
       function init() {
@@ -89,7 +94,7 @@
         const height = window.innerHeight;
         const aspect = width / height;
         const nearPlane = 1;
-        const farPlane = 10000;
+        const farPlane = 1000;
         const WebGLoutput = document.getElementById("container");
 
         scene = new THREE.Scene();
@@ -100,6 +105,8 @@
           farPlane
         );
         camera.position.z = 3000;
+
+        console.log(camera.position, 9999);
 
         renderer = new CSS3DRenderer();
         renderer.setSize(width, height);
@@ -135,14 +142,11 @@
          * @type {THREE}
          * @position vector3( value1, value2, value3 ) [value: -2000 ~ 2000]
          *
-         *
-         *
          */
-
         let i = 0;
-        let len = table.length;
-
-        for (; i < len; i += 5) {
+        let len = users.length;
+        // 生成 118 个元素
+        for (let i = 0; i < len; i += 5) {
           const element = document.createElement("div");
           element.className = "element";
           element.style.backgroundColor = `rgba( 0, 127, 127, ${
@@ -156,12 +160,12 @@
 
           const symbol = document.createElement("div");
           symbol.className = "symbol";
-          symbol.textContent = table[i];
+          symbol.textContent = users[i];
           element.appendChild(symbol);
 
           const detail = document.createElement("div");
           detail.className = "detail";
-          detail.innerHTML = `${table[i + 1]}<br/>${table[i + 2]}`;
+          detail.innerHTML = `${users[i + 1]}<br/>${users[i + 2]}`;
           element.appendChild(detail);
 
           const object = new CSS3DObject(element);
@@ -181,7 +185,7 @@
         createSphereVertices();
 
         /**
-         * [objLength 118 个元素]
+         * [objLength 48 个元素]
          * @type {[number]}
          *
          * [createTableVertices create table format vertices]
@@ -192,16 +196,16 @@
          *
          * [createTableVertices create grid format vertices]
          */
-
+        // 生成 table 格式的 48 个元素
         function createTableVertices() {
           let i = 0;
 
           for (; i < len; i += 5) {
             const object = new THREE.Object3D();
 
-            // [ column 18 ]
-            object.position.x = table[i + 3] * 140 - 1260;
-            object.position.y = -table[i + 4] * 180 + 1000;
+            // 这里我想变成 48个，应该怎么写才能让每个元素居中并且适当变大
+            object.position.x = users[i + 3] * 160 - 1360;
+            object.position.y = -users[i + 4] * 200 + 900;
             object.position.z = 0;
 
             targets.table.push(object);
@@ -239,7 +243,7 @@
             const object = new THREE.Object3D();
 
             object.position.x = 800 * Math.sin(phi);
-            object.position.y = -(i * 8) + 450;
+            object.position.y = -(i * 8) + 500;
             object.position.z = 800 * Math.cos(phi + Math.PI);
 
             object.scale.set(1.1, 1.1, 1.1);
@@ -298,6 +302,25 @@
           "click",
           function () {
             transform(targets.sphere, 2000);
+            // TODO: 这里处理相机旋转以及停止旋转，并封装一下
+            let ang = 0;
+            let timer;
+            setTimeout(() => {
+              timer = setInterval(() => {
+                // 旋转相机位置，球体就旋转了
+                ang += Math.PI / 50;
+                camera.position.x = Math.cos(ang) * 3000;
+                camera.position.z = Math.sin(ang) * 3000;
+                camera.position.y = 0;
+              }, 10);
+            }, 2000);
+            setTimeout(() => {
+              clearInterval(timer);
+              camera.position.x = 0;
+              camera.position.z = 3000;
+              camera.position.y = 0;
+              ang = 0;
+            }, 10000);
           },
           false
         );

@@ -37,11 +37,16 @@ button:active {
   background-color: rgba(127, 255, 255, 0.75);
 }
 /*end*/
-
-/*元素样式start*/
+canvas {
+  position: absolute;
+}
+/*
+ * 元素样式start
+ * 如果想变宽，js 里面对应的代码也需要变宽
+ */
 .element {
-  width: 120px;
-  height: 160px;
+  width: 140px;
+  height: 180px;
   cursor: default;
   text-align: center;
   border: 1px solid rgba(127, 255, 255, 0.25);
