@@ -57,9 +57,19 @@ canvas {
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.5);
 }
 
+.element.yearly {
+  border: 1px solid rgba(253,105,0, 0.25) !important;
+  box-shadow: 0 0 12px rgba(253,105,0, 0.75) !important;
+}
+
 .element:hover {
   border: 1px solid rgba(127, 255, 255, 0.75);
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.75);
+}
+
+.element.yearly:hover {
+  border: 1px solid rgba(253,105,0, 0.75) !important;
+  box-shadow: 0 0 12px rgba(253,105,0, 0.75) !important;
 }
 
 .element .wkno {
@@ -68,6 +78,10 @@ canvas {
   right: 20px;
   font-size: 12px;
   color: rgba(127, 255, 255, 0.75);
+}
+
+.element.yearly .wkno {
+  color: rgba(253,105,0, 0.75)
 }
 
 .element .username {
@@ -81,6 +95,10 @@ canvas {
   text-shadow: 0 0 10px rgba(0, 255, 255, 0.95);
 }
 
+.element.yearly .username {
+  text-shadow: 0 0 10px rgba(253,105,0, 0.75);
+}
+
 .element .emailprefix {
   position: absolute;
   left: 0;
@@ -88,6 +106,10 @@ canvas {
   bottom: 15px;
   font-size: 12px;
   color: rgba(127, 255, 255, 0.75);
+}
+
+.element.yearly .emailprefix {
+  color: rgba(253,105,0, 0.75)
 }
 /*end*/
 
@@ -103,6 +125,19 @@ canvas {
   100% { background-color: rgba(127, 255, 255, 0.5); }
 }
 
+.element.yearly.highlight {
+  animation: yearlyHighlightAnimation 1s ease;
+
+}
+
+@keyframes yearlyHighlightAnimation {
+  0% { background-color:  rgba(253,105,0, 0.65); }
+  25% { background-color:  rgba(253,105,0, 0.75); }
+  50% { background-color:  rgba(253,105,0, 0.8); }
+  75% { background-color:  rgba(253,105,0, 0.85); }
+  100% { background-color: rgba(253,105,0, 0.95); }
+}
+
 /**
  * 大幕效果
  **/
@@ -112,18 +147,18 @@ canvas {
   height: 50%; /* 初始高度为屏幕的一半 */
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.9) 0%,
+    rgba(0,0,0,1) 0%,
     rgba(0,0,0,0.3) 100%
   );
   z-index: 10;
-  transition: transform 1s ease-out; /* 添加动画效果 */
+  transition: transform 2s ease-out; /* 添加动画效果 */
 }
 
 #curtain-top {
   top: 0;
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.9) 0%,
+    rgba(0,0,0,1) 0%,
     rgba(0,0,0,0.3) 100%
   );
 }
@@ -132,7 +167,7 @@ canvas {
   bottom: 0;
   background: linear-gradient(
     to top,
-    rgba(0,0,0,0.9) 0%,
+    rgba(0,0,0,1) 0%,
     rgba(0,0,0,0.3) 100%
   );
 }
@@ -150,16 +185,29 @@ canvas {
   height: 400px;
   color: #fff;
   opacity: 0;
-  transition: opacity 1s ease-out; /* 添加动画效果 */
+  transition: opacity 1.5s ease-out; /* 添加动画效果 */
 }
 
 .winner-card {
-  width: 300px;
+  width: 280px;
   height: 360px;
   margin: 0 20px;
-  background-color: rgba(253,105,0,.85) !important;
-  box-shadow: 0 0 12px rgba(253,105,0,.95);
+  background-color: rgba(253,105,0,1) !important;
+  box-shadow: 0 0 12px rgba(253,105,0,1);
   font-size: 2rem;
   font-weight: 600;
   border-radius: 8px;
+  opacity: 1;
+}
+
+#curtain {
+  opacity: 0;
+  transition: opacity 0.5s ease-out; /* 添加动画效果 */
+}
+
+#close-winner-list {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  cursor: pointer;
 }

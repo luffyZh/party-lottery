@@ -8,15 +8,17 @@
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
-    <section id="curtail">
+    <section id="curtain">
       <!-- 大幕 -->
       <div id="curtain-top" class="curtain"></div>
       <div id="curtain-bottom" class="curtain"></div>
 
       <!-- 中奖卡片容器 -->
       <div id="winners-container">
-        <!-- 中奖卡片的HTML结构 -->
-        <div class="winner-card">99999</div>
+        <div id="close-winner-list">
+          <svg t="1705913660137" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1446" width="64" height="64"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#F55300" p-id="1447"></path><path d="M258.56 358.912l434.432 434.432a51.2 51.2 0 0 0 72.3968-72.3968L330.9568 286.5152A51.2 51.2 0 1 0 258.56 358.912z" fill="#F9F9F9" p-id="1448"></path><path d="M258.56 712.192l434.432-434.432a51.2 51.2 0 0 1 72.448 72.3968l-434.4832 434.432A51.2 51.2 0 1 1 258.56 712.192z" fill="#F9F9F9" p-id="1449"></path></svg>
+        </div>
+        <div id="winner-list"></div>
       </div>
     </section>
     <canvas id="canvas"></canvas>
@@ -35,25 +37,42 @@
     <script>
       // 大幕开启的动画函数
       function openCurtains() {
+        const curtainContainer = document.getElementById('curtain');
         const curtainTop = document.getElementById('curtain-top');
         const curtainBottom = document.getElementById('curtain-bottom');
         const winContainer = document.getElementById('winners-container');
         
         // 大幕向上/向下移动的动画
+        curtainContainer.style.opacity = 1;
         curtainTop.style.transform = 'translateY(-200px)';
         curtainBottom.style.transform = 'translateY(200px)';
         // 大幕透明度变化的动画
         winContainer.style.opacity = 0.9;
 
         // 可选：添加过渡效果使动画更平滑
-        curtainTop.style.transition = 'transform 1s ease-out';
-        curtainBottom.style.transition = 'transform 1s ease-out';
+        curtainTop.style.transition = 'transform 2s ease-out';
+        curtainBottom.style.transition = 'transform 2s ease-out';
         // 控制 z-index，使得大幕在抽奖卡片上方
-        winContainer.style.transition = 'opacity 0.5s ease-out';
+        winContainer.style.transition = 'opacity 1.5s ease-out';
+        curtainContainer.style.transition = 'opacity 0.5s ease-out';
+
+        // 添加中奖卡片
+        const winnerList = document.querySelector('#winner-list');
+        const winnerListFragment = document.createDocumentFragment();
+        const winnerCard = document.createElement('div');
+        winnerCard.className = 'winner-card';
+        winnerCard.innerHTML = `
+          <div class="winner-card__info">
+            <div class="winner-card__info__name">张三</div>
+            <div class="winner-card__info__id">1221212</div>
+          </div>`;
+        winnerListFragment.appendChild(winnerCard);
+        winnerList.appendChild(winnerListFragment);
       }
 
       // 大幕关闭的动画函数
       function resetCurtains() {
+        const curtainContainer = document.getElementById('curtain');
         const curtainTop = document.getElementById('curtain-top');
         const curtainBottom = document.getElementById('curtain-bottom');
         const winContainer = document.getElementById('winners-container');
@@ -63,17 +82,10 @@
         curtainBottom.style.transform = 'translateY(0)';
         winContainer.style.opacity = 0;
         setTimeout(() => {
-          winContainer.innerHTML = '';
+          document.querySelector('#winner-list').innerHTML = '';
+          curtainContainer.style.opacity = 0;
         }, 1000);
       }
-
-      // 假设抽奖结束后调用此函数
-      setTimeout(() => {
-        openCurtains();
-        setTimeout(() => {
-          resetCurtains();
-        }, 3000);
-      }, 3000);
     </script>
     <script type="module">
       /**
@@ -215,10 +227,12 @@
         // 生成 118 个元素
         for (let i = 0; i < len; i += 5) {
           const element = document.createElement("div");
-          element.className = "element";
-          element.style.backgroundColor = `rgba( 0, 127, 127, ${
+          element.className = YEARLY_INDEX.includes(i) ? 'element yearly'  : "element";
+          element.style.backgroundColor = YEARLY_INDEX.includes(i) ? `rgba(253, 105, 0, ${
+            Math.random() * 0.25 + 0.5
+          }` : `rgba( 0, 127, 127, ${
             Math.random() * 0.5 + 0.25
-          } )`;
+          })`;
 
           const number = document.createElement("div");
           // 用户 id
@@ -349,6 +363,18 @@
         const sphereBtn = document.getElementById("sphere");
         // 开始抽奖按钮
         const lotteryBtn = document.getElementById("lottery");
+        // 关闭中奖名单按钮
+        const closeWinnerListBtn = document.getElementById("close-winner-list");
+
+        // 关闭中奖名单
+        closeWinnerListBtn.addEventListener('click', () => {
+          // 重置大幕
+          resetCurtains();
+          // 重新回到 table 页面
+          curLayout = LAYOUT_MODE.表格;
+          transform(targets.table, 1000);
+          camera.position.z = 3000;
+        }, false);
 
         /**
          * 给开始抽奖绑定点击事件，点击后开始抽奖
@@ -419,14 +445,32 @@
          **/
         function stopSphereAnimation() {
           clearInterval(timer);
-          camera.position.x = 0;
-          camera.position.z = 3000;
-          camera.position.y = 0;
-          ang = 0;
-          // 停止旋转过后，让所有元素回到表格位置
-          curLayout = LAYOUT_MODE.表格;
-          transform(targets.table, 2000);
+          // 定义相机的起始和结束位置
+          var endPos = {
+            x: 0,
+            y: 0,
+            z: 4600
+          };
+
+          // 创建新的 tween 对象，用于从 start 到 end
+          new TWEEN.Tween(camera.position)
+            .to(endPos, 2000) // 持续时间 2000 毫秒
+            .easing(TWEEN.Easing.Cubic.Out) // 缓动类型
+            .start();
+
+          new TWEEN.Tween(this)
+            .to({}, 1000 * 2)
+            .onUpdate(render)
+            .start()
+            .onComplete(() => {
+              // 重置旋转角度
+              ang = 0;
+            });
+          // 然后渲染获奖名单
+          openCurtains();
         }
+
+
 
         tableBtn.addEventListener(
           "click",
