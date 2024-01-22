@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <link rel="icon" href="/assets/imgs/icon.png" />
-    <title>SF 实验室年会抽奖</title>
+    <title>年会抽奖程序</title>
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
@@ -65,6 +65,18 @@
         sphere: [],
       };
 
+      /**
+       * 布局方式
+       */
+      const LAYOUT_MODE = {
+        表格: "table",
+        网格: "grid",
+        球体: "sphere",
+        螺旋: "helix",
+      }
+      // 初始化布局
+      let curLayout = LAYOUT_MODE.表格;
+
       init();
       animation();
 
@@ -106,7 +118,7 @@
         );
         camera.position.z = 3000;
 
-        console.log(camera.position, 9999);
+        console.log('camera.position: ', camera.position);
 
         renderer = new CSS3DRenderer();
         renderer.setSize(width, height);
@@ -154,17 +166,20 @@
           } )`;
 
           const number = document.createElement("div");
-          number.className = "number";
+          // 用户 id
+          number.className = "wkno";
           number.textContent = i / 5 + 1;
           element.appendChild(number);
 
           const symbol = document.createElement("div");
-          symbol.className = "symbol";
+          // 中文名
+          symbol.className = "username";
           symbol.textContent = users[i];
           element.appendChild(symbol);
 
           const detail = document.createElement("div");
-          detail.className = "detail";
+          // 邮箱前缀
+          detail.className = "emailprefix";
           detail.innerHTML = `${users[i + 1]}<br/>${users[i + 2]}`;
           element.appendChild(detail);
 
@@ -185,7 +200,7 @@
         createSphereVertices();
 
         /**
-         * [objLength 48 个元素]
+         * 生成排列的表格元素
          * @type {[number]}
          *
          * [createTableVertices create table format vertices]
@@ -196,14 +211,15 @@
          *
          * [createTableVertices create grid format vertices]
          */
-        // 生成 table 格式的 48 个元素
+        // 生成 table 格式的元素
         function createTableVertices() {
           let i = 0;
 
           for (; i < len; i += 5) {
             const object = new THREE.Object3D();
-
-            // 这里我想变成 48个，应该怎么写才能让每个元素居中并且适当变大
+            /**
+             * 如果想变宽变高，可以通过修改这里的 160 和 200，但是需要修改 CSS 中的 .element 的宽高现在是（140 和 180）
+             **/
             object.position.x = users[i + 3] * 160 - 1360;
             object.position.y = -users[i + 4] * 200 + 900;
             object.position.z = 0;
@@ -280,6 +296,7 @@
         gridBtn.addEventListener(
           "click",
           function () {
+            curLayout = LAYOUT_MODE.网格;
             transform(targets.grid, 2000);
           },
           false
@@ -287,6 +304,7 @@
         tableBtn.addEventListener(
           "click",
           function () {
+            curLayout = LAYOUT_MODE.表格;
             transform(targets.table, 2000);
           },
           false
@@ -294,6 +312,7 @@
         helixBtn.addEventListener(
           "click",
           function () {
+            curLayout = LAYOUT_MODE.螺旋;
             transform(targets.helix, 2000);
           },
           false
@@ -301,6 +320,7 @@
         sphereBtn.addEventListener(
           "click",
           function () {
+            curLayout = LAYOUT_MODE.球体;
             transform(targets.sphere, 2000);
             // TODO: 这里处理相机旋转以及停止旋转，并封装一下
             let ang = 0;
@@ -325,9 +345,67 @@
           false
         );
 
+        // 如果是表格布局，就随机替换，如果不是就不动
+        function updateRandomElements(numElementsToUpdate) {
+          if (curLayout !== LAYOUT_MODE.表格) return;
+          // 为了随机更新，创建一个包含所有索引的数组
+          const indices = [];
+          for (let i = 0; i < objects.length; i++) {
+            indices.push(i);
+          }
+
+          // 随机选择要更新的元素的索引
+          const indicesToUpdate = [];
+          for (let i = 0; i < numElementsToUpdate; i++) {
+            const randomIndex = Math.floor(Math.random() * indices.length);
+            indicesToUpdate.push(indices.splice(randomIndex, 1)[0]);
+          }
+
+          // 更新选定的元素
+          indicesToUpdate.forEach((ind) => {
+            // 随机获取一个用户数据，按照 5 来取模，是因为每个用户数据占用 5 个元素
+            const _index  = 5 * Math.floor(Math.random() * 20);
+             // TODO: 需要实现获取用户数据的逻辑
+            const userData = [users[_index], users[_index + 1], users[_index + 2], users[_index + 3], users[_index + 4]];
+
+            const element = objects[ind].element;
+            // 更新element的内容
+            // 例如，更新用户名称和其他信息
+            // TODO: 这里只替换了用户名，其他的后续真实数据再进行替换
+            element.querySelector('.username').textContent = userData[0];
+            // ... 更新其他需要的DOM元素
+
+            // 更新场景中的CSS3DObject
+            const object = objects[ind];
+            scene.remove(object);
+            const newObject = new CSS3DObject(element);
+            newObject.position.copy(object.position);
+            newObject.rotation.copy(object.rotation);
+            scene.add(newObject);
+            objects[ind] = newObject;
+            // 更新元素内容的同时，添加高亮动画
+            element.classList.add('highlight');
+
+            // 设置一个定时器，在1秒后移除高亮类
+            setTimeout(() => {
+              element.classList.remove('highlight');
+            }, 1000);
+          });
+
+          // 重新渲染场景
+          renderer.render(scene, camera);
+        }
+
+        // 设置定时器周期性调用 updateRandomElements 函数
+
         window.addEventListener("resize", onWindowResize, false);
         // default animation
         transform(targets.table, 2000);
+        // 等所有布局都完成之后，再开始随机更新
+        setTimeout(() => {
+          // 每 10 秒随机更新 10 个元素的内容和位置
+          setInterval(() => updateRandomElements(20), 1000);
+        }, 3000);
 
         /**
          * [transform transform domelem'position to target'position]
