@@ -8,20 +8,73 @@
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
+    <section id="curtail">
+      <!-- 大幕 -->
+      <div id="curtain-top" class="curtain"></div>
+      <div id="curtain-bottom" class="curtain"></div>
+
+      <!-- 中奖卡片容器 -->
+      <div id="winners-container">
+        <!-- 中奖卡片的HTML结构 -->
+        <div class="winner-card">99999</div>
+      </div>
+    </section>
     <canvas id="canvas"></canvas>
     <div id="container">
       <!-- 选中菜单结构 start-->
       <div id="menu">
         <button id="table">TABLE</button>
         <button id="sphere">SPHERE</button>
-        <button id="helix">HELIX</button>
-        <button id="grid">GRID</button>
+        <button id="lottery">开始抽奖</button>
       </div>
       <!-- end -->
     </div>
     <script src="./js/star-bg.js"></script>
     <script src="./js/three.min.js"></script>
     <script src="./js/data.js"></script>
+    <script>
+      // 大幕开启的动画函数
+      function openCurtains() {
+        const curtainTop = document.getElementById('curtain-top');
+        const curtainBottom = document.getElementById('curtain-bottom');
+        const winContainer = document.getElementById('winners-container');
+        
+        // 大幕向上/向下移动的动画
+        curtainTop.style.transform = 'translateY(-200px)';
+        curtainBottom.style.transform = 'translateY(200px)';
+        // 大幕透明度变化的动画
+        winContainer.style.opacity = 0.9;
+
+        // 可选：添加过渡效果使动画更平滑
+        curtainTop.style.transition = 'transform 1s ease-out';
+        curtainBottom.style.transition = 'transform 1s ease-out';
+        // 控制 z-index，使得大幕在抽奖卡片上方
+        winContainer.style.transition = 'opacity 0.5s ease-out';
+      }
+
+      // 大幕关闭的动画函数
+      function resetCurtains() {
+        const curtainTop = document.getElementById('curtain-top');
+        const curtainBottom = document.getElementById('curtain-bottom');
+        const winContainer = document.getElementById('winners-container');
+        
+        // 重置大幕的位置
+        curtainTop.style.transform = 'translateY(0)';
+        curtainBottom.style.transform = 'translateY(0)';
+        winContainer.style.opacity = 0;
+        setTimeout(() => {
+          winContainer.innerHTML = '';
+        }, 1000);
+      }
+
+      // 假设抽奖结束后调用此函数
+      setTimeout(() => {
+        openCurtains();
+        setTimeout(() => {
+          resetCurtains();
+        }, 3000);
+      }, 3000);
+    </script>
     <script type="module">
       /**
        * 初始化引入所有依赖
@@ -76,6 +129,8 @@
       }
       // 初始化布局
       let curLayout = LAYOUT_MODE.表格;
+      // 是否在抽奖中
+      let isLottery = false;
 
       init();
       animation();
@@ -221,7 +276,7 @@
              * 如果想变宽变高，可以通过修改这里的 160 和 200，但是需要修改 CSS 中的 .element 的宽高现在是（140 和 180）
              **/
             object.position.x = users[i + 3] * 160 - 1360;
-            object.position.y = -users[i + 4] * 200 + 900;
+            object.position.y = -users[i + 4] * 200 + 800;
             object.position.z = 0;
 
             targets.table.push(object);
@@ -288,19 +343,91 @@
           }
         }
 
-        const gridBtn = document.getElementById("grid");
+        // const gridBtn = document.getElementById("grid");
         const tableBtn = document.getElementById("table");
-        const helixBtn = document.getElementById("helix");
+        // const helixBtn = document.getElementById("helix");
         const sphereBtn = document.getElementById("sphere");
+        // 开始抽奖按钮
+        const lotteryBtn = document.getElementById("lottery");
 
-        gridBtn.addEventListener(
+        /**
+         * 给开始抽奖绑定点击事件，点击后开始抽奖
+         * 抽奖过程中文案变成 停！
+         * 抽奖结束后，文案变成 开始抽奖
+         **/
+        lotteryBtn.addEventListener(
           "click",
           function () {
-            curLayout = LAYOUT_MODE.网格;
-            transform(targets.grid, 2000);
+            if (isLottery) {
+              // 停止抽奖
+              isLottery = false;
+              lotteryBtn.textContent = "开始抽奖";
+              // 停止抽奖的逻辑，让所有元素停止旋转
+              stopSphereAnimation();
+            } else {
+              // 开始抽奖
+              lotteryBtn.textContent = "停！";
+              isLottery = true;
+              // 开始抽奖的逻辑，让所有元素开始旋转
+              startSphereAnimation();
+            }
           },
           false
         );
+
+        // gridBtn.addEventListener(
+        //   "click",
+        //   function () {
+        //     curLayout = LAYOUT_MODE.网格;
+        //     transform(targets.grid, 2000);
+        //   },
+        //   false
+        // );
+        // helixBtn.addEventListener(
+        //   "click",
+        //   function () {
+        //     curLayout = LAYOUT_MODE.螺旋;
+        //     transform(targets.helix, 2000);
+        //   },
+        //   false
+        // );
+
+        // 球体动画相关参数
+        let ang = 0;
+        let timer;
+
+        /**
+         * 开始进行球体旋转
+         **/
+        function startSphereAnimation() {
+          curLayout = LAYOUT_MODE.球体;
+          transform(targets.sphere, 2000);
+          // TODO: 这里处理相机旋转以及停止旋转，并封装一下
+          setTimeout(() => {
+            timer = setInterval(() => {
+              // 旋转相机位置，球体就旋转了
+              ang += Math.PI / 50;
+              camera.position.x = Math.cos(ang) * 3000;
+              camera.position.z = Math.sin(ang) * 3000;
+              camera.position.y = 0;
+            }, 10);
+          }, 2600);
+        }
+
+        /**
+         * 停止球体旋转
+         **/
+        function stopSphereAnimation() {
+          clearInterval(timer);
+          camera.position.x = 0;
+          camera.position.z = 3000;
+          camera.position.y = 0;
+          ang = 0;
+          // 停止旋转过后，让所有元素回到表格位置
+          curLayout = LAYOUT_MODE.表格;
+          transform(targets.table, 2000);
+        }
+
         tableBtn.addEventListener(
           "click",
           function () {
@@ -309,38 +436,11 @@
           },
           false
         );
-        helixBtn.addEventListener(
-          "click",
-          function () {
-            curLayout = LAYOUT_MODE.螺旋;
-            transform(targets.helix, 2000);
-          },
-          false
-        );
         sphereBtn.addEventListener(
           "click",
           function () {
             curLayout = LAYOUT_MODE.球体;
             transform(targets.sphere, 2000);
-            // TODO: 这里处理相机旋转以及停止旋转，并封装一下
-            let ang = 0;
-            let timer;
-            setTimeout(() => {
-              timer = setInterval(() => {
-                // 旋转相机位置，球体就旋转了
-                ang += Math.PI / 50;
-                camera.position.x = Math.cos(ang) * 3000;
-                camera.position.z = Math.sin(ang) * 3000;
-                camera.position.y = 0;
-              }, 10);
-            }, 2000);
-            setTimeout(() => {
-              clearInterval(timer);
-              camera.position.x = 0;
-              camera.position.z = 3000;
-              camera.position.y = 0;
-              ang = 0;
-            }, 10000);
           },
           false
         );
@@ -374,15 +474,6 @@
             // TODO: 这里只替换了用户名，其他的后续真实数据再进行替换
             element.querySelector('.username').textContent = userData[0];
             // ... 更新其他需要的DOM元素
-
-            // 更新场景中的CSS3DObject
-            const object = objects[ind];
-            scene.remove(object);
-            const newObject = new CSS3DObject(element);
-            newObject.position.copy(object.position);
-            newObject.rotation.copy(object.rotation);
-            scene.add(newObject);
-            objects[ind] = newObject;
             // 更新元素内容的同时，添加高亮动画
             element.classList.add('highlight');
 
