@@ -94,7 +94,7 @@
       // 是否显示了奖品面板
       let PRIZE_PANEL_VISIBLE = false;
       // 当前进行到第几轮，这里开始有缓存了
-      let CUR_STAGE = localStorage.getItem('CUR_STAGE') || 1;
+      let CUR_STAGE = +localStorage.getItem('CUR_STAGE') || 1;
       // 中奖人信息，也是有缓存的
       const WINNERS_LIST = localStorage.getItem('WINNERS_LIST') ? JSON.parse(localStorage.getItem('WINNERS_LIST')) : [];
     </script>
