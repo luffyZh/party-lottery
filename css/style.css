@@ -29,19 +29,31 @@ body {
 }
 
 .show {
-  display: inline-block;
+  display: inline-block !important;
 }
+
+.showflex {
+  display: flex !important;
+}
+
+.hide {
+  display: none !important;
+}
+
 /*选择按钮样式start*/
 #menu {
   position: absolute;
   z-index: 100;
-  width: 100%;
+  width: 400px;
+  left: 50%;
+  margin-left: -200px;
   bottom: 50px;
   text-align: center;
   font-size: 48px;
 }
 
 button {
+  display: none;
   border: none;
   background-color: transparent;
   color: rgba(127, 255, 255, 0.75);
@@ -50,7 +62,6 @@ button {
   outline: 2px solid rgba(127, 255, 255, 0.75);
   font-size: 2.6rem;
   font-weight: 600;
-  display: none;
   border-radius: 6px;
 }
 
@@ -234,3 +245,270 @@ canvas {
   top: 16px;
   cursor: pointer;
 }
+
+#prize-panel {
+  display: none;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 410px;
+  height: 140px;
+  padding: 8px;
+  align-items: center;
+  border-radius: 4px;
+  flex-wrap: nowrap;
+  background-color: rgba(0,127,127,.37);
+  border: 1px solid rgba(127,255,255,.25);
+  color: rgba(127,255,255,.75);
+  box-sizing: border-box;
+  transition: transform 1s ease-in;
+  cursor: pointer;
+}
+
+#prize-panel .prize-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.6rem;
+  color: rgba(0, 255, 255, 0.95);
+}
+
+#prize-panel .prize-info .prize-stage {
+  width: 100%;
+  padding-top: 6px;
+  margin-top: 6px;
+  border-top: 1px solid rgba(0, 255, 255, 0.95);
+  text-align: center;
+  margin-left: 8px;
+}
+
+#prize-panel.shine {
+  box-shadow: 0 0 15px 0 rgba(0,255,255,.5);
+  transform: scale(1.1);
+  transform-origin: left center;
+  overflow: hidden;
+}
+
+#prize-panel .prize-img {
+  height: 120px;
+  width: 160px;
+  border: 3px solid #fff;
+}
+
+#prize-panel.shine span {
+  position: absolute;
+}
+
+#prize-panel.shine span.line-1 {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #03e9f4);
+  animation: animate1 1s linear infinite
+}
+
+@keyframes animate1 {
+  0% {
+    left: -100%;
+  }
+  50%, 100% {
+    left: 100%;
+  }
+}
+
+#prize-panel.shine span.line-2 {
+  top: -100%;
+  right: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #03e9f4);
+  animation: animate2 1s linear infinite;
+  animation-delay: .25s
+}
+
+@keyframes animate2 {
+  0% {
+    top: -100%;
+  }
+  50%, 100% {
+    top: 100%;
+  }
+}
+
+#prize-panel.shine span.line-3 {
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(270deg, transparent, #03e9f4);
+  animation: animate3 1s linear infinite;
+  animation-delay: .50s
+}
+
+@keyframes animate3 {
+  0% {
+    right: -100%;
+  }
+  50%, 100% {
+    right: 100%;
+  }
+}
+
+#prize-panel.shine span.line-4 {
+  bottom: -100%;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, #03e9f4);
+  animation: animate4 1s linear infinite;
+  animation-delay: .75s
+}
+
+@keyframes animate4 {
+  0% {
+    bottom: -100%;
+  }
+  50%, 100% {
+    bottom: 100%;
+  }
+}
+
+#show-prize-panel {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  cursor: pointer;
+}
+
+#show-extra-panel {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+#extra-panel {
+  display: none;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 410px;
+  height: 140px;
+  padding: 8px;
+  align-items: center;
+  border-radius: 4px;
+  flex-wrap: nowrap;
+  background-color: rgba(0,127,127,.37);
+  border: 1px solid rgba(127,255,255,.25);
+  color: rgba(127,255,255,.75);
+  box-sizing: border-box;
+  transition: transform 1s ease-in;
+}
+
+#extra-panel .extra-info {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  font-size: 1.6rem;
+  color: rgba(0, 255, 255, 0.95);
+}
+
+#extra-panel .extra-info .extra-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+#extra-panel .extra-info .extra-item svg {
+  margin-bottom: 10px;
+}
+
+#extra-panel.shine {
+  box-shadow: 0 0 15px 0 rgba(0,255,255,.5);
+  transform: scale(1.1);
+  transform-origin: left center;
+  overflow: hidden;
+}
+
+#extra-panel.shine span {
+  position: absolute;
+}
+
+#extra-panel.shine span.line-1 {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #03e9f4);
+  animation: animate1 1s linear infinite
+}
+
+@keyframes animate1 {
+  0% {
+    left: -100%;
+  }
+  50%, 100% {
+    left: 100%;
+  }
+}
+
+#extra-panel.shine span.line-2 {
+  top: -100%;
+  right: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #03e9f4);
+  animation: animate2 1s linear infinite;
+  animation-delay: .25s
+}
+
+@keyframes animate2 {
+  0% {
+    top: -100%;
+  }
+  50%, 100% {
+    top: 100%;
+  }
+}
+
+#extra-panel.shine span.line-3 {
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(270deg, transparent, #03e9f4);
+  animation: animate3 1s linear infinite;
+  animation-delay: .50s
+}
+
+@keyframes animate3 {
+  0% {
+    right: -100%;
+  }
+  50%, 100% {
+    right: 100%;
+  }
+}
+
+#extra-panel.shine span.line-4 {
+  bottom: -100%;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, #03e9f4);
+  animation: animate4 1s linear infinite;
+  animation-delay: .75s
+}
+
+@keyframes animate4 {
+  0% {
+    bottom: -100%;
+  }
+  50%, 100% {
+    bottom: 100%;
+  }
+}
+
