@@ -811,6 +811,11 @@
               // 如果没显示，那么就显示
               document.querySelector("#show-prize-panel").click();
             }
+            if (CUR_STAGE === PRIZES_LIST.length) {
+              // 已经抽完了，已经是最后一轮了
+              alert("所有奖品均已抽完！！！");
+              return;
+            }
             if (isLottery) {
               // 停止抽奖
               isLottery = false;
