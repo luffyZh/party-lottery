@@ -93,27 +93,28 @@ canvas {
   position: absolute;
   top: 20px;
   right: 20px;
-  font-size: 12px;
-  color: rgba(127, 255, 255, 0.75);
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .element.yearly .wkno {
-  color: rgba(253,105,0, 0.75)
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .element .username {
   position: absolute;
-  top: 40px;
+  top: 66px;
   left: 0px;
   right: 0;
-  font-size: 60px;
+  font-size: 36px;
   font-weight: bold;
   color: rgba(255, 255, 255, 0.75);
   text-shadow: 0 0 10px rgba(0, 255, 255, 0.95);
 }
 
 .element.yearly .username {
-  text-shadow: 0 0 10px rgba(253,105,0, 0.75);
+  color: rgba(255, 255, 255, 0.75);
+  text-shadow: 0 0 10px rgba(253,105,0, 0.95);
 }
 
 .element .emailprefix {
@@ -121,12 +122,12 @@ canvas {
   left: 0;
   right: 0;
   bottom: 15px;
-  font-size: 12px;
-  color: rgba(127, 255, 255, 0.75);
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .element.yearly .emailprefix {
-  color: rgba(253,105,0, 0.75)
+  color: rgba(255, 255, 255, 0.75);
 }
 /*end*/
 

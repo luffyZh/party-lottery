@@ -35,14 +35,68 @@
     </div>
     <script src="./js/star-bg.js"></script>
     <script src="./js/three.min.js"></script>
-    <script src="./js/data.js"></script>
+    <script src="./js/xlsx.min.js"></script>
     <script>
-      window.onload = function () {
-        const title = document.querySelector('.title');
-        setTimeout(() => {
-          title.classList.add('show', 'animate__animated', 'animate__bounceInDown');
-        }, 2200);
-      };
+      // 2024 index 位置
+      const YEARLY_INDEX = [
+        18 * 5, 19 * 5, 20 * 5, 22 * 5, 23 * 5, 24 * 5, 26 * 5, 27 * 5, 28 * 5, 30 * 5, 32 * 5,
+        37 * 5, 39 * 5, 41 * 5, 45 * 5, 47 * 5, 49 * 5,
+        52 * 5, 53 * 5, 54 * 5, 56 * 5, 58 * 5, 60 * 5, 61 * 5, 62 * 5, 64 * 5, 65 * 5, 66 * 5,
+        69 * 5, 73 * 5, 75 * 5, 77 * 5, 83 * 5,
+        86 * 5, 87 * 5, 88 * 5, 90 * 5, 91 * 5, 92 *5, 94 * 5, 95 * 5, 96 * 5, 100 * 5
+      ];
+      // 显示的用户数量，这里是 119 个比较合适，可以随意更改，只要调整显示的方式就行
+      const SHOW_LENGTH = 119;
+      // 用户数据是否 READY
+      let IS_USERSDATA_READY = false;
+      // 用户数据
+      const LOTTERY_DATA = {
+        realUsers: [],
+        users: [],
+      }
+    </script>
+    <script>
+      // 读取 Excel 文件，解析用户数据
+      function initUsers() {
+        fetch('users.xlsx')
+        .then(response => response.arrayBuffer())
+        .then(buffer => {
+            /* 读取工作簿 */
+            const workbook = XLSX.read(buffer, {type: 'buffer'});
+
+            /* 获取工作簿的第一个工作表 */
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+
+            /* 将工作表对象转换为JSON */
+            // FIXME: 这里很重要，抽奖的结果必须使用真实的用户数据，而不是 mock 的数据，这样可以确保公正准确
+            const realUsers = XLSX.utils.sheet_to_json(worksheet);
+            console.log('Real users: ', realUsers);
+            // 保存真实的用户数据
+            LOTTERY_DATA.realUsers = realUsers;
+            // 如果表格数据不够，就用原来的数据补充满，如果表格数据太多，就截取前面的 119 数据
+            // TODO: 这里现在默认的是用户数量肯定是 119 的一半还要多，所以只需要 mock 一个数量差就行了
+            const mockUsers = realUsers.length >= SHOW_LENGTH ? realUsers.slice(0, SHOW_LENGTH) : [...realUsers, ...realUsers.slice(0, SHOW_LENGTH - realUsers.length)];
+            const users = [];
+            for (let i = 0; i < SHOW_LENGTH; i++) {
+              const username = mockUsers[i]['姓名'];
+              const emailprefix = mockUsers[i]['域账号'];
+              const wkno = mockUsers[i]['工号'];
+              // 行数
+              const row = (i % 17) + 1;
+              const column = Math.floor(i / 17) + 1;
+
+              const element = [username, emailprefix, wkno, row, column];
+
+              users.push(...element);
+            }
+            // 保存展示的用户数据
+            LOTTERY_DATA.users = users;
+            // 用户数据准备完毕
+            IS_USERSDATA_READY = true;
+        })
+        .catch(error => console.error('Error reading the excel file:', error));
+      }
       // 大幕开启的动画函数
       function openCurtains() {
         const curtainContainer = document.getElementById('curtain');
@@ -94,6 +148,18 @@
           curtainContainer.style.opacity = 0;
         }, 1000);
       }
+      /**
+       * 初始化页面
+       **/
+      window.onload = function () {
+        // 初始化标题
+        const title = document.querySelector('.title');
+        setTimeout(() => {
+          title.classList.add('show', 'animate__animated', 'animate__bounceInDown');
+        }, 2200);
+        // 初始化用户数据
+        initUsers();
+      };
     </script>
     <script type="module">
       /**
@@ -151,9 +217,6 @@
       let curLayout = LAYOUT_MODE.表格;
       // 是否在抽奖中
       let isLottery = false;
-
-      init();
-      animation();
 
       /**
        * [init initialize scene && create animation && set constrol]
@@ -230,10 +293,8 @@
          * @position vector3( value1, value2, value3 ) [value: -2000 ~ 2000]
          *
          */
-        let i = 0;
-        let len = users.length;
-        // 生成 118 个元素
-        for (let i = 0; i < len; i += 5) {
+        // 生成 118 个元素，这里需要根据用户数量 * 5 来生成，因为每个用户占据 5 个元素长度
+        for (let i = 0; i < SHOW_LENGTH * 5; i += 5) {
           const element = document.createElement("div");
           element.className = YEARLY_INDEX.includes(i) ? 'element yearly'  : "element";
           element.style.backgroundColor = YEARLY_INDEX.includes(i) ? `rgba(253, 105, 0, ${
@@ -245,21 +306,20 @@
           const number = document.createElement("div");
           // 用户 id
           number.className = "wkno";
-          number.textContent = i / 5 + 1;
+          number.textContent = LOTTERY_DATA.users[i + 2];
           element.appendChild(number);
 
           const symbol = document.createElement("div");
           // 中文名
           symbol.className = "username";
-          symbol.textContent = users[i];
+          symbol.textContent = LOTTERY_DATA.users[i];
           element.appendChild(symbol);
 
           const detail = document.createElement("div");
           // 邮箱前缀
           detail.className = "emailprefix";
-          detail.innerHTML = `${users[i + 1]}<br/>${users[i + 2]}`;
+          detail.innerHTML = LOTTERY_DATA.users[i + 1];
           element.appendChild(detail);
-
           const object = new CSS3DObject(element);
           object.position.x = Math.random() * 4000 - 2000;
           object.position.y = Math.random() * 4000 - 2000;
@@ -292,13 +352,13 @@
         function createTableVertices() {
           let i = 0;
 
-          for (; i < len; i += 5) {
+          for (; i < SHOW_LENGTH * 5; i += 5) {
             const object = new THREE.Object3D();
             /**
              * 如果想变宽变高，可以通过修改这里的 160 和 200，但是需要修改 CSS 中的 .element 的宽高现在是（140 和 180）
              **/
-            object.position.x = users[i + 3] * 160 - 1360;
-            object.position.y = -users[i + 4] * 200 + 800;
+            object.position.x = LOTTERY_DATA.users[i + 3] * 160 - 1360;
+            object.position.y = -LOTTERY_DATA.users[i + 4] * 200 + 800;
             object.position.z = 0;
 
             targets.table.push(object);
@@ -516,15 +576,16 @@
           // 更新选定的元素
           indicesToUpdate.forEach((ind) => {
             // 随机获取一个用户数据，按照 5 来取模，是因为每个用户数据占用 5 个元素
-            const _index  = 5 * Math.floor(Math.random() * 20);
+            const _index  = 5 * Math.floor(Math.random() * 50);
              // TODO: 需要实现获取用户数据的逻辑
-            const userData = [users[_index], users[_index + 1], users[_index + 2], users[_index + 3], users[_index + 4]];
-
+            const userData = [LOTTERY_DATA.users[_index], LOTTERY_DATA.users[_index + 1], LOTTERY_DATA.users[_index + 2], LOTTERY_DATA.users[_index + 3], LOTTERY_DATA.users[_index + 4]];
             const element = objects[ind].element;
             // 更新element的内容
             // 例如，更新用户名称和其他信息
             // TODO: 这里只替换了用户名，其他的后续真实数据再进行替换
             element.querySelector('.username').textContent = userData[0];
+            element.querySelector('.emailprefix').textContent = userData[1];
+            element.querySelector('.wkno').textContent = userData[2];
             // ... 更新其他需要的DOM元素
             // 更新元素内容的同时，添加高亮动画
             element.classList.add('highlight');
@@ -623,6 +684,18 @@
       function render() {
         renderer.render(scene, camera);
       }
+
+      // 循环判断用户数据是否 READY
+      let dataTimer;
+      dataTimer = setInterval(() => {
+        // 如果已经准备好了
+        if (IS_USERSDATA_READY) {
+          console.log('用户数据已经准备好了');
+          init();
+          animation();
+          clearInterval(dataTimer);
+        }
+      }, 200);
     </script>
   </body>
 </html>
