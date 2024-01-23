@@ -1,8 +1,52 @@
+// 2024 index 位置
+const YEARLY_INDEX = [
+  18 * 5, 19 * 5, 20 * 5, 22 * 5, 23 * 5, 24 * 5, 26 * 5, 27 * 5, 28 * 5, 30 * 5, 32 * 5,
+  37 * 5, 39 * 5, 41 * 5, 45 * 5, 47 * 5, 49 * 5,
+  52 * 5, 53 * 5, 54 * 5, 56 * 5, 58 * 5, 60 * 5, 61 * 5, 62 * 5, 64 * 5, 65 * 5, 66 * 5,
+  69 * 5, 73 * 5, 75 * 5, 77 * 5, 83 * 5,
+  86 * 5, 87 * 5, 88 * 5, 90 * 5, 91 * 5, 92 *5, 94 * 5, 95 * 5, 96 * 5, 100 * 5
+];
+
 const table = [
   "H",
   "Hydrogen",
   "1.00794",
   1,
+  1,
+  "H",
+  "Hydrogen",
+  "1.00794",
+  2,
+  1,
+  "H",
+  "Hydrogen",
+  "1.00794",
+  3,
+  1,
+  "H",
+  "Hydrogen",
+  "1.00794",
+  4,
+  1,
+  "H",
+  "Hydrogen",
+  "1.00794",
+  5,
+  1,
+  "H",
+  "Hydrogen",
+  "1.00794",
+  6,
+  1,
+  "H",
+  "Hydrogen",
+  "1.00794",
+  7,
+  1,
+  "H",
+  "Hydrogen",
+  "1.00794",
+  8,
   1,
   "He",
   "Helium",
@@ -590,3 +634,61 @@ const table = [
   18,
   7,
 ];
+
+const SHOW_LENGTH = 119;
+
+/**
+ * 初始化生成用户墙， 7 * 17，如果不够就补充循环，如果多了就截断
+ * Row：7 行
+ * Column：17 列
+ */
+function generateInitialUsers() {
+  const initialUsers = [];
+  for (let i = 0; i < SHOW_LENGTH; i++) {
+    const symbol = generateRandomString(3);
+    const name = generateRandomString(6);
+    const atomicWeight = i;
+    // 行数
+    const row = (i % 17) + 1;
+    const column = Math.floor(i / 17) + 1;
+
+    const element = [symbol, name, atomicWeight, row, column];
+
+    initialUsers.push(...element);
+  }
+  return initialUsers;
+}
+
+function generateRandomString(len) {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let randomString = "";
+
+  for (let i = 0; i < len; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    randomString += characters.charAt(randomIndex);
+  }
+
+  return randomString;
+}
+
+function convertTableData(table) {
+  const convertedTable = [];
+
+  for (let i = 0; i < table.length; i += 5) {
+    const symbol = generateRandomString(3);
+    const name = generateRandomString(8);
+    const atomicWeight = i;
+    const row = table[i + 3];
+    const column = table[i + 4];
+
+    const element = [symbol, name, atomicWeight, row, column];
+
+    convertedTable.push(...element);
+  }
+
+  return convertedTable;
+}
+
+const users = generateInitialUsers();
+console.log(users, users.length);
