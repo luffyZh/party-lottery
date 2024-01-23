@@ -29,7 +29,7 @@ body {
 }
 
 .show {
-  display: block;
+  display: inline-block;
 }
 /*选择按钮样式start*/
 #menu {
@@ -38,24 +38,30 @@ body {
   width: 100%;
   bottom: 50px;
   text-align: center;
-  font-size: 32px;
+  font-size: 48px;
 }
 
 button {
   border: none;
   background-color: transparent;
   color: rgba(127, 255, 255, 0.75);
-  padding: 12px 24px;
+  padding: 18px 48px;
   cursor: pointer;
-  outline: 1px solid rgba(127, 255, 255, 0.75);
+  outline: 2px solid rgba(127, 255, 255, 0.75);
+  font-size: 2.6rem;
+  font-weight: 600;
+  display: none;
+  border-radius: 6px;
 }
 
 button:hover {
   background-color: rgba(127, 255, 255, 0.5);
+  color: #fff;
 }
 
 button:active {
   background-color: rgba(127, 255, 255, 0.75);
+  color: #fff;
 }
 /*end*/
 canvas {

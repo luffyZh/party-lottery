@@ -27,8 +27,6 @@
     <div id="container">
       <!-- 选中菜单结构 start-->
       <div id="menu">
-        <button id="table">TABLE</button>
-        <button id="sphere">SPHERE</button>
         <button id="lottery">开始抽奖</button>
       </div>
       <!-- end -->
@@ -143,19 +141,21 @@
         curtainTop.style.transform = 'translateY(0)';
         curtainBottom.style.transform = 'translateY(0)';
         winContainer.style.opacity = 0;
+        curtainContainer.style.opacity = 0;
         setTimeout(() => {
           document.querySelector('#winner-list').innerHTML = '';
-          curtainContainer.style.opacity = 0;
         }, 1000);
       }
       /**
        * 初始化页面
        **/
       window.onload = function () {
-        // 初始化标题
+        // 初始化标题和抽奖按钮
         const title = document.querySelector('.title');
+        const lottery = document.querySelector('#lottery')
         setTimeout(() => {
           title.classList.add('show', 'animate__animated', 'animate__bounceInDown');
+          lottery.classList.add('show', 'animate__animated', 'animate__bounceInUp');
         }, 2200);
         // 初始化用户数据
         initUsers();
@@ -425,10 +425,6 @@
           }
         }
 
-        // const gridBtn = document.getElementById("grid");
-        const tableBtn = document.getElementById("table");
-        // const helixBtn = document.getElementById("helix");
-        const sphereBtn = document.getElementById("sphere");
         // 开始抽奖按钮
         const lotteryBtn = document.getElementById("lottery");
         // 关闭中奖名单按钮
@@ -468,23 +464,6 @@
           },
           false
         );
-
-        // gridBtn.addEventListener(
-        //   "click",
-        //   function () {
-        //     curLayout = LAYOUT_MODE.网格;
-        //     transform(targets.grid, 2000);
-        //   },
-        //   false
-        // );
-        // helixBtn.addEventListener(
-        //   "click",
-        //   function () {
-        //     curLayout = LAYOUT_MODE.螺旋;
-        //     transform(targets.helix, 2000);
-        //   },
-        //   false
-        // );
 
         // 球体动画相关参数
         let ang = 0;
@@ -537,25 +516,6 @@
           // 然后渲染获奖名单
           openCurtains();
         }
-
-
-
-        tableBtn.addEventListener(
-          "click",
-          function () {
-            curLayout = LAYOUT_MODE.表格;
-            transform(targets.table, 2000);
-          },
-          false
-        );
-        sphereBtn.addEventListener(
-          "click",
-          function () {
-            curLayout = LAYOUT_MODE.球体;
-            transform(targets.sphere, 2000);
-          },
-          false
-        );
 
         // 如果是表格布局，就随机替换，如果不是就不动
         function updateRandomElements(numElementsToUpdate) {
