@@ -18,7 +18,7 @@
       <!-- 中奖卡片容器 -->
       <div id="winners-container">
         <div id="close-winner-list">
-          <svg t="1705913660137" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1446" width="64" height="64"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#F55300" p-id="1447"></path><path d="M258.56 358.912l434.432 434.432a51.2 51.2 0 0 0 72.3968-72.3968L330.9568 286.5152A51.2 51.2 0 1 0 258.56 358.912z" fill="#F9F9F9" p-id="1448"></path><path d="M258.56 712.192l434.432-434.432a51.2 51.2 0 0 1 72.448 72.3968l-434.4832 434.432A51.2 51.2 0 1 1 258.56 712.192z" fill="#F9F9F9" p-id="1449"></path></svg>
+          <svg t="1705913660137" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1446" width="32" height="32"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#F55300" p-id="1447"></path><path d="M258.56 358.912l434.432 434.432a51.2 51.2 0 0 0 72.3968-72.3968L330.9568 286.5152A51.2 51.2 0 1 0 258.56 358.912z" fill="#F9F9F9" p-id="1448"></path><path d="M258.56 712.192l434.432-434.432a51.2 51.2 0 0 1 72.448 72.3968l-434.4832 434.432A51.2 51.2 0 1 1 258.56 712.192z" fill="#F9F9F9" p-id="1449"></path></svg>
         </div>
         <div id="winner-list"></div>
       </div>
@@ -36,11 +36,11 @@
       <span class="line-2"></span>
       <span class="line-3"></span>
       <span class="line-4"></span>
-      <img class="prize-img" src="images/jbl.png" alt="prize" />
+      <img id="prize-img" class="prize-img" src="images/jbl.png" alt="prize" />
       <div class="prize-info">
         <div id="prize-name" class="prize-name">科沃斯扫地机器人</div>
-        <div class="prize-count">数量: 8个</div>
-        <div class="prize-stage">第1轮</div>
+        <div id="prize-count" class="prize-count">数量: 8个</div>
+        <div id="prize-stage" class="prize-stage">第1轮</div>
       </div>
     </section>
     <section id="show-prize-panel">
@@ -52,7 +52,7 @@
       <span class="line-3"></span>
       <span class="line-4"></span>
       <div class="extra-info">
-        <div class="extra-item">
+        <div class="extra-item" id="reset-lottery">
           <svg t="1705998770475" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5534" id="mx_n_1705998770476" width="48" height="48"><path d="M0 446.56409h446.820074V0H0zM74.523342 74.523342h297.805387v297.517405H74.523342zM577.11593 1023.936004H1023.936004V577.371914H577.11593z m74.491345-372.040747h297.805387v297.517405h-297.805387z m210.482844-343.562528l-37.245672-40.669458-52.348728 48.63696 121.720392 130.263859 13.375165-12.511218 38.109618-35.83776 10.815324-10.23936L1023.936004 325.131679l-48.63696-52.348728-36.701706 33.27792-1.983876-5.695644-3.423786-10.23936C879.241047 140.631211 749.777139 30.750078 592.058996 5.727642l-2.463846-0.31998v75.099306a362.505343 362.505343 0 0 1 271.631023 225.361915l0.831948 2.463846zM161.845885 721.010937l37.245672 40.669458 52.348728-48.63696-120.888444-130.263859-13.375165 12.511218-38.973564 35.83776-10.815324 10.239361-67.419786 62.844072 48.63696 52.348728 36.701706-33.27792 1.983876 5.695644 3.423786 10.23936c53.948628 149.494657 183.412537 259.375789 341.13068 284.398225l2.463846 0.31998v-75.099306a362.505343 362.505343 0 0 1-271.631023-225.361915l-0.831948-2.463846z" p-id="5535" fill="#7FFFFF"></path></svg>
           重置抽奖
         </div>
@@ -72,6 +72,7 @@
     <script src="./js/star-bg.js"></script>
     <script src="./js/three.min.js"></script>
     <script src="./js/xlsx.min.js"></script>
+    <script src="./js/prizes.js"></script>
     <script>
       // 2024 index 位置
       const YEARLY_INDEX = [
@@ -90,10 +91,20 @@
         realUsers: [],
         users: [],
       }
+      // 是否显示了奖品面板
+      let PRIZE_PANEL_VISIBLE = false;
       // 当前进行到第几轮，这里开始有缓存了
-      let CUR_ROUND = localStorage.getItem('CUR_ROUND') || 1;
+      let CUR_STAGE = localStorage.getItem('CUR_STAGE') || 1;
+      // 中奖人信息，也是有缓存的
+      const WINNERS_LIST = localStorage.getItem('WINNERS_LIST') ? JSON.parse(localStorage.getItem('WINNERS_LIST')) : [];
     </script>
     <script>
+      // 重置抽奖，重置所有缓存
+      const resetLottery = document.querySelector('#reset-lottery');
+      resetLottery.addEventListener('click', () => {
+        localStorage.clear();
+        location.reload();
+      }, false);
       // 读取 Excel 文件，解析用户数据
       function initUsers() {
         fetch('users.xlsx')
@@ -136,7 +147,7 @@
         .catch(error => console.error('Error reading the excel file:', error));
       }
       // 大幕开启的动画函数
-      function openCurtains() {
+      function openCurtains(winners) {
         const curtainContainer = document.getElementById('curtain');
         const curtainTop = document.getElementById('curtain-top');
         const curtainBottom = document.getElementById('curtain-bottom');
@@ -144,8 +155,8 @@
         
         // 大幕向上/向下移动的动画
         curtainContainer.style.opacity = 1;
-        curtainTop.style.transform = 'translateY(-200px)';
-        curtainBottom.style.transform = 'translateY(200px)';
+        curtainTop.style.transform = 'translateY(-160px)';
+        curtainBottom.style.transform = 'translateY(160px)';
         // 大幕透明度变化的动画
         winContainer.style.opacity = 0.9;
 
@@ -159,15 +170,25 @@
         // 添加中奖卡片
         const winnerList = document.querySelector('#winner-list');
         const winnerListFragment = document.createDocumentFragment();
-        const winnerCard = document.createElement('div');
-        winnerCard.className = 'winner-card';
-        winnerCard.innerHTML = `
-          <div class="winner-card__info">
-            <div class="winner-card__info__name">张三</div>
-            <div class="winner-card__info__id">1221212</div>
-          </div>`;
-        winnerListFragment.appendChild(winnerCard);
+        console.log('winners: ', winners);
+        winners.forEach(winner => {
+          const winnerCard = document.createElement('div');
+          winnerCard.className = 'winner-card';
+          winnerCard.innerHTML = `
+            <div class="winner-card__info">
+              <div class="winner-card__info__wkno">${winner["工号"]}</div>
+              <div class="winner-card__info__username">${winner["姓名"]}</div>
+              <div class="winner-card__info__emailprefix">${winner["域账号"]}</div>
+            </div>`;
+          winnerListFragment.appendChild(winnerCard);
+        })
         winnerList.appendChild(winnerListFragment);
+        // 显示名单的同时，把开始抽奖隐藏
+        const lottery = document.querySelector('#lottery')
+        setTimeout(() => {
+          lottery.classList.remove('show', 'animate__animated', 'animate__bounceInUp');
+          lottery.classList.add('hide');
+        }, 2200);
       }
 
       // 大幕关闭的动画函数
@@ -191,6 +212,7 @@
        **/
       const showPrizeIcon = document.querySelector('#show-prize-panel');
       showPrizeIcon.addEventListener('click', () => {
+        PRIZE_PANEL_VISIBLE = true;
         showPrizeIcon.classList.add('hide');
         const prizePanel = document.querySelector('#prize-panel');
         prizePanel.classList.add('animate__animated', 'animate__fadeInLeftBig', 'showflex');
@@ -204,6 +226,49 @@
         const extraPanel = document.querySelector('#extra-panel');
         extraPanel.classList.add('animate__animated', 'animate__fadeInRightBig', 'showflex');
       }, false);
+      /**
+       * 生成中奖人名单，反给前端用来展示当前轮次的中奖信息
+       **/
+      function generateWinners() {
+        // 必须根据真实的用户来生成，这样才能保证公正
+        const realUsers = LOTTERY_DATA.realUsers.filter(user => !WINNERS_LIST.find(winner => winner['域账号'] === user['域账号']));
+        // 从抽奖轮次中获取需要几个人
+        const prizeInfo = PRIZES_LIST.find(prize => prize.stage === CUR_STAGE);
+        const { count, stage, name } = prizeInfo;
+        // 从用户里随机选出指定数量的人
+        const winners = [];
+        for (let i = 0; i < count; i++) {
+          const randomIndex = Math.floor(Math.random() * realUsers.length);
+          const winner = realUsers[randomIndex];
+          winners.push({
+            ...winner,
+            stage,
+            name,
+          });
+          // 从用户列表中删除已经中奖的用户
+          realUsers.splice(randomIndex, 1);
+        }
+        // 更新中奖人信息并存入缓存
+        WINNERS_LIST.push(...winners);
+        localStorage.setItem('WINNERS_LIST', JSON.stringify([...WINNERS_LIST, ...winners]));
+        return winners;
+      }
+      /**
+       * 更新轮次信息
+       **/
+      function updateStageInfo() {
+        const prizeInfo = PRIZES_LIST.find(prize => prize.stage === CUR_STAGE);
+        const { count, name, image, stage } = prizeInfo;
+        // 更新对应的内容
+        const prizeName = document.querySelector('#prize-name');
+        const prizeCount = document.querySelector('#prize-count');
+        const prizeStage = document.querySelector('#prize-stage');
+        const prizeImg = document.querySelector('#prize-img');
+        prizeName.textContent = name;
+        prizeCount.textContent = `数量: ${count}个`;
+        prizeStage.textContent = `第${stage}轮`;
+        prizeImg.src = image;
+      }
       /**
        * 初始化页面
        **/
@@ -490,12 +555,23 @@
 
         // 关闭中奖名单
         closeWinnerListBtn.addEventListener('click', () => {
+          // 把开始抽奖放出来
+          const lottery = document.querySelector('#lottery')
+          setTimeout(() => {
+            lottery.classList.remove('hide');
+            lottery.classList.add('show', 'animate__animated', 'animate__bounceInUp');
+          }, 2200);
           // 重置大幕
           resetCurtains();
           // 重新回到 table 页面
           curLayout = LAYOUT_MODE.表格;
           transform(targets.table, 1000);
           camera.position.z = 3000;
+          // 更新轮次
+          CUR_STAGE += 1;
+          // 更新缓存轮次
+          localStorage.setItem("CUR_STAGE", CUR_STAGE);
+          updateStageInfo();
         }, false);
 
         /**
@@ -506,15 +582,23 @@
         lotteryBtn.addEventListener(
           "click",
           function () {
+            if (!PRIZE_PANEL_VISIBLE) {
+              // 如果没显示，那么就显示
+              document.querySelector('#show-prize-panel').click();
+            }
             if (isLottery) {
               // 停止抽奖
               isLottery = false;
               lotteryBtn.textContent = "开始抽奖";
               // 停止抽奖的逻辑，让所有元素停止旋转
               stopSphereAnimation();
+              // 随机生成中奖人名单
+              const winners = generateWinners();
+              // 然后渲染获奖名单
+              openCurtains(winners);
             } else {
               // 开始抽奖
-              lotteryBtn.textContent = "停！";
+              lotteryBtn.textContent = "停";
               isLottery = true;
               // 开始抽奖的逻辑，让所有元素开始旋转
               startSphereAnimation();
@@ -571,8 +655,6 @@
               // 重置旋转角度
               ang = 0;
             });
-          // 然后渲染获奖名单
-          openCurtains();
         }
 
         // 如果是表格布局，就随机替换，如果不是就不动
