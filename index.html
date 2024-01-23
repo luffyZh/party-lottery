@@ -6,8 +6,10 @@
     <link rel="icon" href="/assets/imgs/icon.png" />
     <title>年会抽奖程序</title>
     <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/animate.css" />
   </head>
   <body>
+    <h1 class="title">SF 实验室 2024 年会抽奖</h1>
     <section id="curtain">
       <!-- 大幕 -->
       <div id="curtain-top" class="curtain"></div>
@@ -35,6 +37,12 @@
     <script src="./js/three.min.js"></script>
     <script src="./js/data.js"></script>
     <script>
+      window.onload = function () {
+        const title = document.querySelector('.title');
+        setTimeout(() => {
+          title.classList.add('show', 'animate__animated', 'animate__bounceInDown');
+        }, 2200);
+      };
       // 大幕开启的动画函数
       function openCurtains() {
         const curtainContainer = document.getElementById('curtain');
@@ -229,7 +237,7 @@
           const element = document.createElement("div");
           element.className = YEARLY_INDEX.includes(i) ? 'element yearly'  : "element";
           element.style.backgroundColor = YEARLY_INDEX.includes(i) ? `rgba(253, 105, 0, ${
-            Math.random() * 0.25 + 0.5
+            Math.random() * 0.25 + 0.6
           }` : `rgba( 0, 127, 127, ${
             Math.random() * 0.5 + 0.25
           })`;
@@ -539,7 +547,7 @@
         // 等所有布局都完成之后，再开始随机更新
         setTimeout(() => {
           // 每 10 秒随机更新 10 个元素的内容和位置
-          setInterval(() => updateRandomElements(20), 1000);
+          setInterval(() => updateRandomElements(26), 1000);
         }, 3000);
 
         /**
