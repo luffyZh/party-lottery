@@ -297,6 +297,11 @@ canvas {
   box-shadow: 0 0 12px rgba(253, 105, 0, 1);
 }
 
+.winner-card.single {
+  background-color: rgba(253, 105, 0, 1) !important;
+  box-shadow: 0 0 12px rgba(253, 105, 0, 1);
+}
+
 .winner-card__info {
   height: 100%;
   display: flex;
