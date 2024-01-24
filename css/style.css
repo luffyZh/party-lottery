@@ -18,39 +18,50 @@ body {
 .title {
   display: none;
   position: absolute;
-  top: 30px;
+  top: 10px;
   left: 0;
   width: 100%;
-  font-size: 6rem;
+  font-size: 5rem;
   text-align: center;
-  color: rgba(253,105,0, 1);
-  text-shadow: 0 0 10px rgba(253,105,0, 0.95);
+  color: rgba(253, 105, 0, 1);
+  text-shadow: 0 0 10px rgba(253, 105, 0, 0.95);
   z-index: 16;
 }
 
 .show {
-  display: inline-block;
+  display: inline-block !important;
 }
+
+.showflex {
+  display: flex !important;
+}
+
+.hide {
+  display: none !important;
+}
+
 /*选择按钮样式start*/
 #menu {
   position: absolute;
   z-index: 100;
-  width: 100%;
-  bottom: 50px;
+  width: 400px;
+  left: 50%;
+  margin-left: -200px;
+  bottom: 20px;
   text-align: center;
   font-size: 48px;
 }
 
 button {
+  display: none;
   border: none;
   background-color: transparent;
   color: rgba(127, 255, 255, 0.75);
-  padding: 18px 48px;
+  padding: 4px 48px;
   cursor: pointer;
   outline: 2px solid rgba(127, 255, 255, 0.75);
   font-size: 2.6rem;
   font-weight: 600;
-  display: none;
   border-radius: 6px;
 }
 
@@ -81,8 +92,8 @@ canvas {
 }
 
 .element.yearly {
-  border: 1px solid rgba(253,105,0, 0.25) !important;
-  box-shadow: 0 0 12px rgba(253,105,0, 0.75) !important;
+  border: 1px solid rgba(253, 105, 0, 0.25) !important;
+  box-shadow: 0 0 12px rgba(253, 105, 0, 0.75) !important;
 }
 
 .element:hover {
@@ -91,8 +102,8 @@ canvas {
 }
 
 .element.yearly:hover {
-  border: 1px solid rgba(253,105,0, 0.75) !important;
-  box-shadow: 0 0 12px rgba(253,105,0, 0.75) !important;
+  border: 1px solid rgba(253, 105, 0, 0.75) !important;
+  box-shadow: 0 0 12px rgba(253, 105, 0, 0.75) !important;
 }
 
 .element .wkno {
@@ -120,7 +131,7 @@ canvas {
 
 .element.yearly .username {
   color: rgba(255, 255, 255, 0.75);
-  text-shadow: 0 0 10px rgba(253,105,0, 0.95);
+  text-shadow: 0 0 10px rgba(253, 105, 0, 0.95);
 }
 
 .element .emailprefix {
@@ -142,11 +153,21 @@ canvas {
 }
 
 @keyframes highlightAnimation {
-  0% { background-color: rgba(127, 255, 255, 0.1); }
-  25% { background-color: rgba(127, 255, 255, 0.25); }
-  50% { background-color: rgba(127, 255, 255, 0.35); }
-  75% { background-color: rgba(127, 255, 255, 0.45); }
-  100% { background-color: rgba(127, 255, 255, 0.5); }
+  0% {
+    background-color: rgba(127, 255, 255, 0.1);
+  }
+  25% {
+    background-color: rgba(127, 255, 255, 0.25);
+  }
+  50% {
+    background-color: rgba(127, 255, 255, 0.35);
+  }
+  75% {
+    background-color: rgba(127, 255, 255, 0.45);
+  }
+  100% {
+    background-color: rgba(127, 255, 255, 0.5);
+  }
 }
 
 .element.yearly.highlight {
@@ -154,11 +175,21 @@ canvas {
 }
 
 @keyframes yearlyHighlightAnimation {
-  0% { background-color:  rgba(253,105,0, 0.75); }
-  25% { background-color:  rgba(253,105,0, 0.8); }
-  50% { background-color:  rgba(253,105,0, 0.85); }
-  75% { background-color:  rgba(253,105,0, 0.9); }
-  100% { background-color: rgba(253,105,0, 0.95); }
+  0% {
+    background-color: rgba(253, 105, 0, 0.75);
+  }
+  25% {
+    background-color: rgba(253, 105, 0, 0.8);
+  }
+  50% {
+    background-color: rgba(253, 105, 0, 0.85);
+  }
+  75% {
+    background-color: rgba(253, 105, 0, 0.9);
+  }
+  100% {
+    background-color: rgba(253, 105, 0, 0.95);
+  }
 }
 
 /**
@@ -170,8 +201,8 @@ canvas {
   height: 50%; /* 初始高度为屏幕的一半 */
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,1) 0%,
-    rgba(0,0,0,0.3) 100%
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.7) 100%
   );
   z-index: 10;
   transition: transform 2s ease-out; /* 添加动画效果 */
@@ -181,8 +212,8 @@ canvas {
   top: 0;
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,1) 0%,
-    rgba(0,0,0,0.3) 100%
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.7) 100%
   );
 }
 
@@ -190,8 +221,8 @@ canvas {
   bottom: 0;
   background: linear-gradient(
     to top,
-    rgba(0,0,0,1) 0%,
-    rgba(0,0,0,0.3) 100%
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.7) 100%
   );
 }
 
@@ -200,27 +231,100 @@ canvas {
   position: fixed;
   width: 100%;
   top: 50%;
-  margin-top: -200px;
+  margin-top: -160px;
   z-index: 5;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 400px;
+  height: 320px;
   color: #fff;
   opacity: 0;
   transition: opacity 1.5s ease-out; /* 添加动画效果 */
 }
 
+#winner-list {
+  display: flex;
+  padding: 0 20px;
+}
+
 .winner-card {
-  width: 280px;
-  height: 360px;
+  width: 180px;
+  height: 260px;
   margin: 0 20px;
-  background-color: rgba(253,105,0,1) !important;
-  box-shadow: 0 0 12px rgba(253,105,0,1);
   font-size: 2rem;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: 4px;
   opacity: 1;
+  border: 2px solid #fff;
+}
+
+.winner-card.stage-1 {
+  width: 150px;
+  height: 230px;
+  margin: 0 8px;
+  font-size: 1.8rem;
+  background-color: rgba(100, 149, 237, 1) !important;
+  box-shadow: 0 0 12px rgba(100, 149, 237, 1);
+}
+
+.winner-card.stage-2 {
+  width: 170px;
+  height: 250px;
+  margin: 0 10px;
+  background-color: rgba(46, 139, 87, 1) !important;
+  box-shadow: 0 0 12px rgba(46, 139, 87, 1);
+}
+
+.winner-card.stage-3 {
+  width: 180px;
+  height: 260px;
+  background-color: rgba(0, 206, 209, 1) !important;
+  box-shadow: 0 0 12px rgba(0, 206, 209, 1);
+}
+
+.winner-card.stage-4 {
+  background-color: rgba(218, 165, 32, 1) !important;
+  box-shadow: 0 0 12px rgba(218, 165, 32, 1);
+}
+
+.winner-card.stage-5 {
+  background-color: rgba(255, 99, 71, 1) !important;
+  box-shadow: 0 0 12px rgba(255, 99, 71, 1);
+}
+
+.winner-card.stage-6 {
+  background-color: rgba(253, 105, 0, 1) !important;
+  box-shadow: 0 0 12px rgba(253, 105, 0, 1);
+}
+
+.winner-card__info {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.winner-card__info__wkno {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  font-size: 1.2rem;
+  margin-right: 20px;
+}
+
+.winner-card__info__username {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.winner-card__info__emailprefix {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 1.4rem;
 }
 
 #curtain {
@@ -230,7 +334,387 @@ canvas {
 
 #close-winner-list {
   position: absolute;
-  right: 16px;
-  top: 16px;
+  right: 10px;
+  top: 10px;
   cursor: pointer;
+}
+
+#prize-panel {
+  display: none;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 410px;
+  height: 140px;
+  padding: 8px;
+  align-items: center;
+  border-radius: 4px;
+  flex-wrap: nowrap;
+  background-color: rgba(0, 127, 127, 0.37);
+  border: 1px solid rgba(127, 255, 255, 0.25);
+  color: rgba(127, 255, 255, 0.75);
+  box-sizing: border-box;
+  transition: transform 1s ease-in;
+  cursor: pointer;
+}
+
+#prize-panel .prize-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.6rem;
+  color: rgba(0, 255, 255, 0.95);
+}
+
+#prize-panel .prize-info .prize-stage {
+  width: 100%;
+  padding-top: 6px;
+  margin-top: 6px;
+  border-top: 1px solid rgba(0, 255, 255, 0.95);
+  text-align: center;
+  margin-left: 8px;
+}
+
+#prize-panel.shine {
+  box-shadow: 0 0 15px 0 rgba(0, 255, 255, 0.5);
+  transform: scale(1.1);
+  transform-origin: left center;
+  overflow: hidden;
+}
+
+#prize-panel .prize-img {
+  height: 120px;
+  width: 160px;
+  border: 3px solid #fff;
+}
+
+#prize-panel.shine span {
+  position: absolute;
+}
+
+#prize-panel.shine span.line-1 {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #03e9f4);
+  animation: animate1 1s linear infinite;
+}
+
+@keyframes animate1 {
+  0% {
+    left: -100%;
+  }
+  50%,
+  100% {
+    left: 100%;
+  }
+}
+
+#prize-panel.shine span.line-2 {
+  top: -100%;
+  right: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #03e9f4);
+  animation: animate2 1s linear infinite;
+  animation-delay: 0.25s;
+}
+
+@keyframes animate2 {
+  0% {
+    top: -100%;
+  }
+  50%,
+  100% {
+    top: 100%;
+  }
+}
+
+#prize-panel.shine span.line-3 {
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(270deg, transparent, #03e9f4);
+  animation: animate3 1s linear infinite;
+  animation-delay: 0.5s;
+}
+
+@keyframes animate3 {
+  0% {
+    right: -100%;
+  }
+  50%,
+  100% {
+    right: 100%;
+  }
+}
+
+#prize-panel.shine span.line-4 {
+  bottom: -100%;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, #03e9f4);
+  animation: animate4 1s linear infinite;
+  animation-delay: 0.75s;
+}
+
+@keyframes animate4 {
+  0% {
+    bottom: -100%;
+  }
+  50%,
+  100% {
+    bottom: 100%;
+  }
+}
+
+#show-prize-panel {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  cursor: pointer;
+  z-index: 9;
+}
+
+#show-extra-panel {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 9;
+}
+
+#extra-panel {
+  display: none;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 410px;
+  height: 140px;
+  padding: 8px;
+  align-items: center;
+  border-radius: 4px;
+  flex-wrap: nowrap;
+  background-color: rgba(0, 127, 127, 0.37);
+  border: 1px solid rgba(127, 255, 255, 0.25);
+  color: rgba(127, 255, 255, 0.75);
+  box-sizing: border-box;
+  transition: transform 1s ease-in;
+  z-index: 9;
+}
+
+#extra-panel .extra-info {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  font-size: 1.6rem;
+  color: rgba(0, 255, 255, 0.95);
+}
+
+#extra-panel .extra-info .extra-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+#extra-panel .extra-info .extra-item svg {
+  margin-bottom: 10px;
+}
+
+#extra-panel.shine {
+  box-shadow: 0 0 15px 0 rgba(0, 255, 255, 0.5);
+  transform: scale(1.1);
+  transform-origin: left center;
+  overflow: hidden;
+}
+
+#extra-panel.shine span {
+  position: absolute;
+}
+
+#extra-panel.shine span.line-1 {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #03e9f4);
+  animation: animate1 1s linear infinite;
+}
+
+@keyframes animate1 {
+  0% {
+    left: -100%;
+  }
+  50%,
+  100% {
+    left: 100%;
+  }
+}
+
+#extra-panel.shine span.line-2 {
+  top: -100%;
+  right: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #03e9f4);
+  animation: animate2 1s linear infinite;
+  animation-delay: 0.25s;
+}
+
+@keyframes animate2 {
+  0% {
+    top: -100%;
+  }
+  50%,
+  100% {
+    top: 100%;
+  }
+}
+
+#extra-panel.shine span.line-3 {
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(270deg, transparent, #03e9f4);
+  animation: animate3 1s linear infinite;
+  animation-delay: 0.5s;
+}
+
+@keyframes animate3 {
+  0% {
+    right: -100%;
+  }
+  50%,
+  100% {
+    right: 100%;
+  }
+}
+
+#extra-panel.shine span.line-4 {
+  bottom: -100%;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, #03e9f4);
+  animation: animate4 1s linear infinite;
+  animation-delay: 0.75s;
+}
+
+@keyframes animate4 {
+  0% {
+    bottom: -100%;
+  }
+  50%,
+  100% {
+    bottom: 100%;
+  }
+}
+
+/**
+ * 中奖名单的表格部分
+ **/
+.winner-table-container {
+  width: 80%;
+  margin: 0 10%;
+  opacity: 0;
+  transition: opacity 1.5s ease-out; /* 添加动画效果 */
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+}
+.winner-table {
+  border-collapse: collapse;
+  width:100%;
+  border:1px solid #c6c6c6 !important;
+}
+.winner-table th {
+  border-collapse: collapse;
+  border-right:1px solid #c6c6c6 !important;
+  border-bottom:1px solid #c6c6c6 !important;
+  background-color:#ddeeff !important; 
+  padding:5px 9px;
+  font-size:14px;
+  font-weight:normal;
+  text-align:center;
+}
+.winner-table td {
+  border-collapse: collapse;
+  border-right: 1px solid #c6c6c6 !important;
+  border-bottom: 1px solid #c6c6c6 !important; 
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: normal;
+  text-align: center;
+  word-break: break-all;
+}
+.winner-table tr:nth-child(odd) {
+  background-color:#fff !important; 
+}
+.winner-table tr:nth-child(even) {
+  background-color: #f8f8f8 !important;
+}
+
+/**
+ * 大幕效果
+ **/
+.winner-list-table_curtain {
+  position: fixed;
+  width: 100%;
+  height: 50%; /* 初始高度为屏幕的一半 */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  z-index: 10;
+  transition: transform 2s ease-out; /* 添加动画效果 */
+}
+
+#winner-list-table__curtain-top {
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+#winner-list-table__curtain-bottom {
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+#winner-list-table__curtain {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  opacity: 0;
+  transition: opacity 0.5s ease-out; /* 添加动画效果 */
+}
+
+.winner-table-actions {
+  display: flex;
+  justify-content: end;
+  background-color: #fff;
+  padding: 4px 10px;
+}
+
+.winner-table-actions .item {
+  margin-left: 20px;
+  cursor: pointer;
+  color: #666;
+  padding: 4px 28px;
+  cursor: pointer;
+  outline: 1px solid #666;
+  font-size: 1rem;
+  border-radius: 2px;
 }
