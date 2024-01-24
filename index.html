@@ -917,7 +917,8 @@
          **/
         function startSphereAnimation() {
           curLayout = LAYOUT_MODE.球体;
-          transform(targets.sphere, 2000);
+          // 如果是奇数，就地球，如果是偶数，就螺旋
+          CUR_STAGE % 2 ? transform(targets.sphere, 2000) : transform(targets.helix, 2000);
           // TODO: 这里处理相机旋转以及停止旋转，并封装一下
           setTimeout(() => {
             timer = setInterval(() => {
