@@ -548,3 +548,72 @@ canvas {
   }
 }
 
+/**
+ * 中奖名单的表格部分
+ **/
+.winner-table {
+  border-collapse: collapse;
+  width:100%;
+  border:1px solid #c6c6c6 !important;
+  margin-bottom:20px;
+}
+.winner-table th {
+  border-collapse: collapse;
+  border-right:1px solid #c6c6c6 !important;
+  border-bottom:1px solid #c6c6c6 !important;
+  background-color:#ddeeff !important; 
+  padding:5px 9px;
+  font-size:14px;
+  font-weight:normal;
+  text-align:center;
+}
+.winner-table td {
+  border-collapse: collapse;
+  border-right:1px solid #c6c6c6 !important;
+  border-bottom:1px solid #c6c6c6 !important; 
+  padding:5px 9px;
+  font-size:12px;
+  font-weight:normal;
+  text-align:center;
+  word-break: break-all;
+}
+.winner-table tr:nth-child(odd) {
+  background-color:#fff !important; 
+}
+.winner-table tr:nth-child(even) {
+  background-color: #f8f8f8 !important;
+}
+
+/**
+ * 大幕效果
+ **/
+.winner-list-table_curtain {
+  position: fixed;
+  width: 100%;
+  height: 50%; /* 初始高度为屏幕的一半 */
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,0.7) 100%
+  );
+  z-index: 10;
+  transition: transform 2s ease-out; /* 添加动画效果 */
+}
+
+#winner-list-table__curtain-top {
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,0.7) 100%
+  );
+}
+
+#winner-list-table__curtain-bottom {
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,0.7) 100%
+  );
+}
