@@ -18,13 +18,13 @@ body {
 .title {
   display: none;
   position: absolute;
-  top: 20px;
+  top: 10px;
   left: 0;
   width: 100%;
-  font-size: 6rem;
+  font-size: 5rem;
   text-align: center;
-  color: rgba(253,105,0, 1);
-  text-shadow: 0 0 10px rgba(253,105,0, 0.95);
+  color: rgba(253, 105, 0, 1);
+  text-shadow: 0 0 10px rgba(253, 105, 0, 0.95);
   z-index: 16;
 }
 
@@ -47,7 +47,7 @@ body {
   width: 400px;
   left: 50%;
   margin-left: -200px;
-  bottom: 30px;
+  bottom: 20px;
   text-align: center;
   font-size: 48px;
 }
@@ -57,7 +57,7 @@ button {
   border: none;
   background-color: transparent;
   color: rgba(127, 255, 255, 0.75);
-  padding: 18px 48px;
+  padding: 4px 48px;
   cursor: pointer;
   outline: 2px solid rgba(127, 255, 255, 0.75);
   font-size: 2.6rem;
@@ -92,8 +92,8 @@ canvas {
 }
 
 .element.yearly {
-  border: 1px solid rgba(253,105,0, 0.25) !important;
-  box-shadow: 0 0 12px rgba(253,105,0, 0.75) !important;
+  border: 1px solid rgba(253, 105, 0, 0.25) !important;
+  box-shadow: 0 0 12px rgba(253, 105, 0, 0.75) !important;
 }
 
 .element:hover {
@@ -102,8 +102,8 @@ canvas {
 }
 
 .element.yearly:hover {
-  border: 1px solid rgba(253,105,0, 0.75) !important;
-  box-shadow: 0 0 12px rgba(253,105,0, 0.75) !important;
+  border: 1px solid rgba(253, 105, 0, 0.75) !important;
+  box-shadow: 0 0 12px rgba(253, 105, 0, 0.75) !important;
 }
 
 .element .wkno {
@@ -131,7 +131,7 @@ canvas {
 
 .element.yearly .username {
   color: rgba(255, 255, 255, 0.75);
-  text-shadow: 0 0 10px rgba(253,105,0, 0.95);
+  text-shadow: 0 0 10px rgba(253, 105, 0, 0.95);
 }
 
 .element .emailprefix {
@@ -153,11 +153,21 @@ canvas {
 }
 
 @keyframes highlightAnimation {
-  0% { background-color: rgba(127, 255, 255, 0.1); }
-  25% { background-color: rgba(127, 255, 255, 0.25); }
-  50% { background-color: rgba(127, 255, 255, 0.35); }
-  75% { background-color: rgba(127, 255, 255, 0.45); }
-  100% { background-color: rgba(127, 255, 255, 0.5); }
+  0% {
+    background-color: rgba(127, 255, 255, 0.1);
+  }
+  25% {
+    background-color: rgba(127, 255, 255, 0.25);
+  }
+  50% {
+    background-color: rgba(127, 255, 255, 0.35);
+  }
+  75% {
+    background-color: rgba(127, 255, 255, 0.45);
+  }
+  100% {
+    background-color: rgba(127, 255, 255, 0.5);
+  }
 }
 
 .element.yearly.highlight {
@@ -165,11 +175,21 @@ canvas {
 }
 
 @keyframes yearlyHighlightAnimation {
-  0% { background-color:  rgba(253,105,0, 0.75); }
-  25% { background-color:  rgba(253,105,0, 0.8); }
-  50% { background-color:  rgba(253,105,0, 0.85); }
-  75% { background-color:  rgba(253,105,0, 0.9); }
-  100% { background-color: rgba(253,105,0, 0.95); }
+  0% {
+    background-color: rgba(253, 105, 0, 0.75);
+  }
+  25% {
+    background-color: rgba(253, 105, 0, 0.8);
+  }
+  50% {
+    background-color: rgba(253, 105, 0, 0.85);
+  }
+  75% {
+    background-color: rgba(253, 105, 0, 0.9);
+  }
+  100% {
+    background-color: rgba(253, 105, 0, 0.95);
+  }
 }
 
 /**
@@ -181,8 +201,8 @@ canvas {
   height: 50%; /* 初始高度为屏幕的一半 */
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,1) 0%,
-    rgba(0,0,0,0.7) 100%
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.7) 100%
   );
   z-index: 10;
   transition: transform 2s ease-out; /* 添加动画效果 */
@@ -192,8 +212,8 @@ canvas {
   top: 0;
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,1) 0%,
-    rgba(0,0,0,0.7) 100%
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.7) 100%
   );
 }
 
@@ -201,8 +221,8 @@ canvas {
   bottom: 0;
   background: linear-gradient(
     to top,
-    rgba(0,0,0,1) 0%,
-    rgba(0,0,0,0.7) 100%
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.7) 100%
   );
 }
 
@@ -228,16 +248,53 @@ canvas {
 }
 
 .winner-card {
-  width: 170px;
+  width: 180px;
   height: 260px;
-  margin: 0 10px;
-  background-color: rgba(253,105,0,1) !important;
-  box-shadow: 0 0 12px rgba(253,105,0,1);
+  margin: 0 20px;
   font-size: 2rem;
   font-weight: 600;
   border-radius: 4px;
   opacity: 1;
   border: 2px solid #fff;
+}
+
+.winner-card.stage-1 {
+  width: 150px;
+  height: 230px;
+  margin: 0 8px;
+  font-size: 1.8rem;
+  background-color: rgba(100, 149, 237, 1) !important;
+  box-shadow: 0 0 12px rgba(100, 149, 237, 1);
+}
+
+.winner-card.stage-2 {
+  width: 170px;
+  height: 250px;
+  margin: 0 10px;
+  background-color: rgba(46, 139, 87, 1) !important;
+  box-shadow: 0 0 12px rgba(46, 139, 87, 1);
+}
+
+.winner-card.stage-3 {
+  width: 180px;
+  height: 260px;
+  background-color: rgba(0, 206, 209, 1) !important;
+  box-shadow: 0 0 12px rgba(0, 206, 209, 1);
+}
+
+.winner-card.stage-4 {
+  background-color: rgba(218, 165, 32, 1) !important;
+  box-shadow: 0 0 12px rgba(218, 165, 32, 1);
+}
+
+.winner-card.stage-5 {
+  background-color: rgba(255, 99, 71, 1) !important;
+  box-shadow: 0 0 12px rgba(255, 99, 71, 1);
+}
+
+.winner-card.stage-6 {
+  background-color: rgba(253, 105, 0, 1) !important;
+  box-shadow: 0 0 12px rgba(253, 105, 0, 1);
 }
 
 .winner-card__info {
@@ -293,9 +350,9 @@ canvas {
   align-items: center;
   border-radius: 4px;
   flex-wrap: nowrap;
-  background-color: rgba(0,127,127,.37);
-  border: 1px solid rgba(127,255,255,.25);
-  color: rgba(127,255,255,.75);
+  background-color: rgba(0, 127, 127, 0.37);
+  border: 1px solid rgba(127, 255, 255, 0.25);
+  color: rgba(127, 255, 255, 0.75);
   box-sizing: border-box;
   transition: transform 1s ease-in;
   cursor: pointer;
@@ -320,7 +377,7 @@ canvas {
 }
 
 #prize-panel.shine {
-  box-shadow: 0 0 15px 0 rgba(0,255,255,.5);
+  box-shadow: 0 0 15px 0 rgba(0, 255, 255, 0.5);
   transform: scale(1.1);
   transform-origin: left center;
   overflow: hidden;
@@ -342,14 +399,15 @@ canvas {
   width: 100%;
   height: 3px;
   background: linear-gradient(90deg, transparent, #03e9f4);
-  animation: animate1 1s linear infinite
+  animation: animate1 1s linear infinite;
 }
 
 @keyframes animate1 {
   0% {
     left: -100%;
   }
-  50%, 100% {
+  50%,
+  100% {
     left: 100%;
   }
 }
@@ -361,14 +419,15 @@ canvas {
   height: 100%;
   background: linear-gradient(180deg, transparent, #03e9f4);
   animation: animate2 1s linear infinite;
-  animation-delay: .25s
+  animation-delay: 0.25s;
 }
 
 @keyframes animate2 {
   0% {
     top: -100%;
   }
-  50%, 100% {
+  50%,
+  100% {
     top: 100%;
   }
 }
@@ -380,14 +439,15 @@ canvas {
   height: 3px;
   background: linear-gradient(270deg, transparent, #03e9f4);
   animation: animate3 1s linear infinite;
-  animation-delay: .50s
+  animation-delay: 0.5s;
 }
 
 @keyframes animate3 {
   0% {
     right: -100%;
   }
-  50%, 100% {
+  50%,
+  100% {
     right: 100%;
   }
 }
@@ -399,14 +459,15 @@ canvas {
   height: 100%;
   background: linear-gradient(360deg, transparent, #03e9f4);
   animation: animate4 1s linear infinite;
-  animation-delay: .75s
+  animation-delay: 0.75s;
 }
 
 @keyframes animate4 {
   0% {
     bottom: -100%;
   }
-  50%, 100% {
+  50%,
+  100% {
     bottom: 100%;
   }
 }
@@ -436,9 +497,9 @@ canvas {
   align-items: center;
   border-radius: 4px;
   flex-wrap: nowrap;
-  background-color: rgba(0,127,127,.37);
-  border: 1px solid rgba(127,255,255,.25);
-  color: rgba(127,255,255,.75);
+  background-color: rgba(0, 127, 127, 0.37);
+  border: 1px solid rgba(127, 255, 255, 0.25);
+  color: rgba(127, 255, 255, 0.75);
   box-sizing: border-box;
   transition: transform 1s ease-in;
 }
@@ -463,7 +524,7 @@ canvas {
 }
 
 #extra-panel.shine {
-  box-shadow: 0 0 15px 0 rgba(0,255,255,.5);
+  box-shadow: 0 0 15px 0 rgba(0, 255, 255, 0.5);
   transform: scale(1.1);
   transform-origin: left center;
   overflow: hidden;
@@ -479,14 +540,15 @@ canvas {
   width: 100%;
   height: 3px;
   background: linear-gradient(90deg, transparent, #03e9f4);
-  animation: animate1 1s linear infinite
+  animation: animate1 1s linear infinite;
 }
 
 @keyframes animate1 {
   0% {
     left: -100%;
   }
-  50%, 100% {
+  50%,
+  100% {
     left: 100%;
   }
 }
@@ -498,14 +560,15 @@ canvas {
   height: 100%;
   background: linear-gradient(180deg, transparent, #03e9f4);
   animation: animate2 1s linear infinite;
-  animation-delay: .25s
+  animation-delay: 0.25s;
 }
 
 @keyframes animate2 {
   0% {
     top: -100%;
   }
-  50%, 100% {
+  50%,
+  100% {
     top: 100%;
   }
 }
@@ -517,14 +580,15 @@ canvas {
   height: 3px;
   background: linear-gradient(270deg, transparent, #03e9f4);
   animation: animate3 1s linear infinite;
-  animation-delay: .50s
+  animation-delay: 0.5s;
 }
 
 @keyframes animate3 {
   0% {
     right: -100%;
   }
-  50%, 100% {
+  50%,
+  100% {
     right: 100%;
   }
 }
@@ -536,14 +600,15 @@ canvas {
   height: 100%;
   background: linear-gradient(360deg, transparent, #03e9f4);
   animation: animate4 1s linear infinite;
-  animation-delay: .75s
+  animation-delay: 0.75s;
 }
 
 @keyframes animate4 {
   0% {
     bottom: -100%;
   }
-  50%, 100% {
+  50%,
+  100% {
     bottom: 100%;
   }
 }
