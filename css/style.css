@@ -723,3 +723,38 @@ canvas {
   font-size: 1rem;
   border-radius: 2px;
 }
+
+.audio-container {
+  position: absolute;
+  z-index: 19;
+  right: 20px;
+  top: 20px;
+  background-color: #fff;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.music-icon {
+  width: 64px;
+  height: 64px;
+  transform: rotate(0deg);
+}
+
+.music-icon.play {
+  animation: rotateMusic 2s linear infinite;
+}
+
+@keyframes rotateMusic {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg)
+  }
+}
+
+.audio-container audio {
+  display: none;
+}
