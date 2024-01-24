@@ -144,11 +144,11 @@
     </section>
     <!-- 中奖名单大幕 -->
     <section id="winner-list-table__curtain">
-      <div id="winner-list-table__curtain-top" class="winner-list-table-curtain"></div>
-      <div id="winner-list-table__curtain-bottom" class="winner-list-table-curtain"></div>
+      <div id="winner-list-table__curtain-top" class="winner-list-table_curtain"></div>
+      <div id="winner-list-table__curtain-bottom" class="winner-list-table_curtain"></div>
 
       <!-- 中奖名单表格 -->
-      <div id="winner-list-table">
+      <div class="winner-table-container">
         <table class="winner-table">
           <thead>
             <tr>
@@ -159,27 +159,12 @@
               <th width="30%">奖品名称</th>
             </tr>
           </thead>
-          <tbody id="winner-table_body">	
-            <tr>
-              <td>测试</td><td>13888888888</td><td>2020-05-16 13:04</td>
-            </tr>
-            <tr>
-              <td>测试</td><td>13888888888</td><td>2020-05-16 13:04</td>
-            </tr>
-            <tr>
-              <td>测试</td><td>13888888888</td><td>2020-05-16 13:04</td>
-            </tr>
-            <tr>
-              <td>测试</td><td>13877777777</td><td>2020-05-16 13:03</td>
-            </tr>
-            <tr>
-              <td>测试</td><td>13866666666</td><td>2020-05-16 13:02</td>
-            </tr>
-            <tr>
-              <td>测试</td><td>13855555555</td><td>2020-05-16 13:01</td>
-            </tr>
-          </tbody>
+          <tbody id="winner-table_body"></tbody>
         </table>
+        <div class="winner-table-actions">
+          <div class="item" id="export-winner-list">导出名单</div>
+          <div class="item" id="close-winner-table">关闭</div>
+        </div>
       </div>
     </section>
     <script src="./js/star-bg.js"></script>
@@ -391,7 +376,7 @@
         const curtainContainer = document.getElementById('winner-list-table__curtain');
         const curtainTop = document.getElementById('winner-list-table__curtain-top');
         const curtainBottom = document.getElementById('winner-list-table__curtain-bottom');
-        const winTableContainer = document.getElementById('winner-list-table');
+        const winTableContainer = document.querySelector('.winner-table-container');
         
         // 大幕向上/向下移动的动画
         curtainContainer.style.opacity = 1;
@@ -434,7 +419,7 @@
         const curtainContainer = document.getElementById('winner-list-table__curtain');
         const curtainTop = document.getElementById('winner-list-table__curtain-top');
         const curtainBottom = document.getElementById('winner-list-table__curtain-bottom');
-        const winTableContainer = document.getElementById('winner-list-table');
+        const winTableContainer = document.querySelector('.winner-table-container');
         
         // 重置大幕的位置
         curtainTop.style.transform = 'translateY(0)';
@@ -445,6 +430,33 @@
           document.querySelector('#winner-table_body').innerHTML = '';
         }, 1000);
       }
+
+      // 关闭中奖名单表格大幕
+      const closeWinnerTable = document.querySelector('#close-winner-table');
+      closeWinnerTable.addEventListener('click', () => {
+        resetWinnerTableCurtains();
+        const lottery = document.querySelector('#lottery');
+        setTimeout(() => {
+          lottery.classList.remove('hide');
+          lottery.classList.add('show', 'animate__animated', 'animate__bounceInUp');
+        }, 2200);
+      }, false);
+
+      /**
+       * 导出中奖名单
+       **/
+      const exportWinnerList = document.querySelector("#export-winner-list");
+      exportWinnerList.addEventListener(
+        "click",
+        () => {
+          const wb = XLSX.utils.book_new();
+          const ws = XLSX.utils.json_to_sheet(WINNERS_LIST);
+          XLSX.utils.book_append_sheet(wb, ws, "2024年会中奖名单");
+          XLSX.writeFile(wb, `2024年会中奖名单_${(new Date()).toLocaleDateString().replaceAll('/', '-')}.xlsx`);
+        },
+        false
+      );
+
       /**
        * 点击显示 Prize Panel
        **/
@@ -861,7 +873,7 @@
               // 如果没显示，那么就显示
               document.querySelector("#show-prize-panel").click();
             }
-            if (CUR_STAGE === PRIZES_LIST.length) {
+            if (CUR_STAGE > PRIZES_LIST.length) {
               // 已经抽完了，已经是最后一轮了
               alert("所有奖品均已抽完！！！");
               return;
