@@ -253,6 +253,10 @@
       const viewWinners = document.querySelector('#view-winners');
       viewWinners.addEventListener('click', () => {
         openWinnerTableCurtains();
+        // 隐藏 extra panel
+        const extraPanel = document.querySelector('#extra-panel');
+        extraPanel.classList.remove('show', 'animate__animated', 'animate__bounceInUp');
+        extraPanel.classList.add('hide');
       }, false);
       // 重置抽奖，重置所有缓存
       const resetLottery = document.querySelector("#reset-lottery");
@@ -338,10 +342,6 @@
         const winnerList = document.querySelector("#winner-list");
         const winnerListFragment = document.createDocumentFragment();
         // 按照姓名排序
-        console.log(
-          "winners: ",
-          winners.sort((a, b) => a["姓名"].localeCompare(b["姓名"]))
-        );
         winners.forEach((winner) => {
           const winnerCard = document.createElement("div");
           winnerCard.className = `winner-card stage-${CUR_STAGE}`;
@@ -366,7 +366,7 @@
             "animate__bounceInUp"
           );
           lottery.classList.add("hide");
-        }, 2200);
+        }, 100);
       }
 
       // 大幕关闭的动画函数
@@ -426,7 +426,7 @@
         setTimeout(() => {
           lottery.classList.remove('show', 'animate__animated', 'animate__bounceInUp');
           lottery.classList.add('hide');
-        }, 2200);
+        }, 100);
       }
 
       // 中奖名单表格大幕关闭的动画函数
@@ -450,10 +450,14 @@
       const closeWinnerTable = document.querySelector('#close-winner-table');
       closeWinnerTable.addEventListener('click', () => {
         resetWinnerTableCurtains();
+        // 显示抽奖按钮
         const lottery = document.querySelector('#lottery');
+        // 显示设置按钮
+        const showExtraIcon = document.querySelector('#show-extra-panel');
         setTimeout(() => {
           lottery.classList.remove('hide');
           lottery.classList.add('show', 'animate__animated', 'animate__bounceInUp');
+          showExtraIcon.classList.remove('hide');
         }, 2200);
       }, false);
 
@@ -499,6 +503,7 @@
         () => {
           showExtraIcon.classList.add("hide");
           const extraPanel = document.querySelector("#extra-panel");
+          extraPanel.classList.remove("hide");
           extraPanel.classList.add(
             "animate__animated",
             "animate__fadeInRightBig",
