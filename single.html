@@ -72,6 +72,9 @@
       // 中奖人信息，也是有缓存的
       const SINGLE_WINNERS_LIST = localStorage.getItem("SINGLE_WINNERS_LIST")
         ? JSON.parse(localStorage.getItem("SINGLE_WINNERS_LIST"))
+        : // 如果没有缓存，那么就看看是不是有已抽奖的用户数据，如果有，就把它们放到缓存里
+        localStorage.getItem("WINNERS_LIST")
+        ? JSON.parse(localStorage.getItem("WINNERS_LIST"))
         : [];
     </script>
     <script>
@@ -169,7 +172,7 @@
             "animate__bounceInUp"
           );
           lottery.classList.add("hide");
-        }, 2200);
+        }, 200);
       }
 
       // 大幕关闭的动画函数
@@ -196,7 +199,9 @@
         // 必须根据真实的用户来生成，这样才能保证公正，把缓存里的中奖者名单全部筛选出去
         const realUsers = LOTTERY_DATA.realUsers.filter(
           (user) =>
-            !SINGLE_WINNERS_LIST.find((winner) => winner["域账号"] === user["域账号"])
+            !SINGLE_WINNERS_LIST.find(
+              (winner) => winner["域账号"] === user["域账号"]
+            )
         );
         // 幸运单抽永远是1个人
         const winners = [];
@@ -211,7 +216,10 @@
         }
         // 更新中奖人信息并存入缓存
         SINGLE_WINNERS_LIST.push(...winners);
-        localStorage.setItem("SINGLE_WINNERS_LIST", JSON.stringify([...SINGLE_WINNERS_LIST]));
+        localStorage.setItem(
+          "SINGLE_WINNERS_LIST",
+          JSON.stringify([...SINGLE_WINNERS_LIST])
+        );
         return winners;
       }
       /**
@@ -373,7 +381,9 @@
         for (let i = 0; i < SHOW_LENGTH * 5; i += 5) {
           const element = document.createElement("div");
           element.className = "element";
-          element.style.backgroundColor = `rgba( 0, 127, 127, ${Math.random() * 0.5 + 0.25})`;
+          element.style.backgroundColor = `rgba( 0, 127, 127, ${
+            Math.random() * 0.5 + 0.25
+          })`;
 
           const number = document.createElement("div");
           // 用户 id

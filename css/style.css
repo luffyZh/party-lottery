@@ -633,23 +633,23 @@ canvas {
 }
 .winner-table {
   border-collapse: collapse;
-  width:100%;
-  border:1px solid #c6c6c6 !important;
+  width: 100%;
+  border: 1px solid #c6c6c6 !important;
 }
 .winner-table th {
   border-collapse: collapse;
-  border-right:1px solid #c6c6c6 !important;
-  border-bottom:1px solid #c6c6c6 !important;
-  background-color:#ddeeff !important; 
-  padding:5px 9px;
-  font-size:14px;
-  font-weight:normal;
-  text-align:center;
+  border-right: 1px solid #c6c6c6 !important;
+  border-bottom: 1px solid #c6c6c6 !important;
+  background-color: #ddeeff !important;
+  padding: 5px 9px;
+  font-size: 14px;
+  font-weight: normal;
+  text-align: center;
 }
 .winner-table td {
   border-collapse: collapse;
   border-right: 1px solid #c6c6c6 !important;
-  border-bottom: 1px solid #c6c6c6 !important; 
+  border-bottom: 1px solid #c6c6c6 !important;
   padding: 2px 10px;
   font-size: 12px;
   font-weight: normal;
@@ -657,7 +657,7 @@ canvas {
   word-break: break-all;
 }
 .winner-table tr:nth-child(odd) {
-  background-color:#fff !important; 
+  background-color: #fff !important;
 }
 .winner-table tr:nth-child(even) {
   background-color: #f8f8f8 !important;
@@ -751,10 +751,20 @@ canvas {
     transform: rotate(0deg);
   }
   100% {
-    transform: rotate(360deg)
+    transform: rotate(360deg);
   }
 }
 
 .audio-container audio {
   display: none;
+}
+
+#export-winner-list {
+  color: #000;
+  border: 1px solid #000;
+}
+
+#close-winner-table {
+  color: red;
+  border: 1px solid red;
 }
