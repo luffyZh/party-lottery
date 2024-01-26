@@ -108,8 +108,8 @@
             const users = [];
             for (let i = 0; i < SHOW_LENGTH; i++) {
               const username = mockUsers[i]["姓名"];
-              const emailprefix = mockUsers[i]["域账号"];
-              const wkno = mockUsers[i]["工号"];
+              const emailprefix = mockUsers[i]["工号"];
+              const wkno = mockUsers[i]["序号"];
               // 行数
               const row = (i % 17) + 1;
               const column = Math.floor(i / 17) + 1;
@@ -156,9 +156,9 @@
           winnerCard.className = `winner-card single`;
           winnerCard.innerHTML = `
             <div class="winner-card__info">
-              <div class="winner-card__info__wkno">${winner["工号"]}</div>
+              <div class="winner-card__info__wkno">${winner["序号"]}</div>
               <div class="winner-card__info__username">${winner["姓名"]}</div>
-              <div class="winner-card__info__emailprefix">${winner["域账号"]}</div>
+              <div class="winner-card__info__emailprefix">${winner["工号"]}</div>
             </div>`;
           winnerListFragment.appendChild(winnerCard);
         });
@@ -200,7 +200,7 @@
         const realUsers = LOTTERY_DATA.realUsers.filter(
           (user) =>
             !SINGLE_WINNERS_LIST.find(
-              (winner) => winner["域账号"] === user["域账号"]
+              (winner) => winner["工号"] === user["工号"]
             )
         );
         // 幸运单抽永远是1个人
@@ -575,7 +575,10 @@
          **/
         function startSphereAnimation() {
           curLayout = LAYOUT_MODE.螺旋;
-          transform(targets.helix, 2000);
+          // 这里给个随机数，如果是小于 0.5 就用球体旋转，否则就用螺旋旋转
+          Math.random() < 0.5
+            ? transform(targets.sphere, 2000)
+            : transform(targets.helix, 2000);
           // TODO: 这里处理相机旋转以及停止旋转，并封装一下
           setTimeout(() => {
             timer = setInterval(() => {

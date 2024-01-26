@@ -361,6 +361,7 @@ canvas {
   box-sizing: border-box;
   transition: transform 1s ease-in;
   cursor: pointer;
+  z-index: 999;
 }
 
 #prize-panel .prize-info {
