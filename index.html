@@ -293,7 +293,8 @@
                 ? realUsers.slice(0, SHOW_LENGTH)
                 : [
                     ...realUsers,
-                    ...realUsers.slice(0, SHOW_LENGTH - realUsers.length),
+                    ...realUsers,
+                    ...realUsers.slice(0, SHOW_LENGTH - realUsers.length * 2),
                   ];
             const users = [];
             for (let i = 0; i < SHOW_LENGTH; i++) {
